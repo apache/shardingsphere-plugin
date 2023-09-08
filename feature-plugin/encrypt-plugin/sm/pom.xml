@@ -20,10 +20,10 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.apache.shardingsphere</groupId>
-        <artifactId>shardingsphere-encrypt-plugin</artifactId>
+        <artifactId>shardingsphere-feature-encrypt-plugin</artifactId>
         <version>5.4.1-SNAPSHOT</version>
     </parent>
-    <artifactId>shardingsphere-encrypt-plugin-sm</artifactId>
+    <artifactId>shardingsphere-feature-encrypt-plugin-sm</artifactId>
     <name>${project.artifactId}</name>
     
     <dependencies>
