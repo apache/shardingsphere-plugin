@@ -31,7 +31,8 @@
     <description>Provide plugins for ShardingSphere pluggable architecture</description>
     
     <modules>
-        <module>feature</module>
+        <module>features</module>
+        <module>infra</module>
     </modules>
     
     <properties>
@@ -51,6 +52,8 @@
         <hamcrest.version>2.2</hamcrest.version>
         <mockito.version>4.11.0</mockito.version>
         <bouncycastle.version>1.70</bouncycastle.version>
+        <c3p0.version>0.9.5.5</c3p0.version>
+        <commons-dbcp2.version>2.9.0</commons-dbcp2.version>
         <commons-codec.version>1.15</commons-codec.version>
         <lombok.version>1.18.20</lombok.version>
         <junit.version>5.9.2</junit.version>
@@ -139,6 +142,10 @@
     </build>
     
     <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
