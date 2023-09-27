@@ -1,3 +1,23 @@
+# Table of Contents
+
+* [Table of Contents](#table-of-contents)
+* [OVERVIEW](#overview)
+* [Instruction](#instruction)
+* [Plug-in Implementation](#plug-in-implementation)
+    * [Feature Plug-in](#feature-plug-in)
+        * [Encrypt Feature Plug-in](#encrypt-feature-plug-in)
+            * [Like Encrypt Algorithm](#like-encrypt-algorithm)
+            * [Standard Encrypt Algorithm](#standard-encrypt-algorithm)
+        * [Sharding Feature Plug-in](#sharding-feature-plug-in)
+            * [Distributed Key Generator](#distributed-key-generator)
+            * [Sharding Algorithm](#sharding-algorithm)
+    * [Infra Plug-in](#infra-plug-in)
+        * [Connection Pool Plug-in](#connection-pool-plug-in)
+    * [JDBC Adaptor Plug-in](#jdbc-adaptor-plug-in)
+        * [JDBC Driver Config Plug-in](#jdbc-driver-config-plug-in)
+    * [Mode Plug-in](#mode-plug-in)
+        * [Mode Cluster Repository Plug-in](#mode-cluster-repository-plug-in)
+
 # OVERVIEW
 
 ShardingSphere Plugin is designed to provide a plug-in implementation for ShardingSphere pluggable architecture. You can refer to [ShardingSphere dev manual](https://shardingsphere.apache.org/document/current/en/dev-manual/) to extend the SPI.
@@ -5,6 +25,14 @@ Developers are welcome to contribute to the implementation of plug-ins and build
 
 [![EN doc](https://img.shields.io/badge/document-English-blue.svg)](https://github.com/apache/shardingsphere-plugin/blob/main/README.md)
 [![CN doc](https://img.shields.io/badge/文档-中文版-blue.svg)](https://github.com/apache/shardingsphere-plugin/blob/main/README_ZH.md)
+
+# Instruction
+
+These plugins can be found in [ShardingSphere Plugins](https://github.com/apache/shardingsphere-plugin) repository. Plugins in ShardingSphere Plugin repository would remain the same release plan with ShardingSphere, they can be retrieved at https://central.sonatype.com/, and install into ShardingSphere.
+When using ShardingSphere-JDBC, users only need to add maven dependencies to the project to complete the plug-in installation. When using ShardingSphere-Proxy, they need to download the plug-in jar package and the jar packages that the plug-in may depend on, and then copy them to ShardingSphere-Proxy `ext-lib` directory.
+
+When developers contribute new plug-ins, they need to refer to [Contributor Guide](https://shardingsphere.apache.org/community/en/involved/contribute/contributor/) and first execute `./mvnw clean install -DskipITs -DskipTests -Prelease` to package ShardingSphere basic SPI and test components, and then create a new module for plug-in development.
+Newly developed plug-in code needs to follow [ShardingSphere development specifications](https://shardingsphere.apache.org/community/en/involved/conduct/code/).
 
 # Plug-in Implementation
 
@@ -27,6 +55,16 @@ Attributes：
 | start  | int        | Ciphertext Unicode initial code（decimal number） |
 | dict   | String     | Common words                                    |
 
+Maven dependency:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-features-encrypt-like</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
 #### Standard Encrypt Algorithm
 
 * RC4 Encrypt Algorithm
@@ -39,6 +77,16 @@ Attributes:
 |---------------|------------|---------------|
 | rc4-key-value | String     | RC4 KEY       |
 
+Maven dependency:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-features-encrypt-rc4</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
 * SM3 Encrypt Algorithm
 
 Type: SM3
@@ -48,6 +96,16 @@ Attributes:
 | *Name*   | *DataType* | *Description*                              |
 |----------|------------|--------------------------------------------|
 | sm3-salt | String     | SM3 SALT (should be blank or 8 bytes long) |
+
+Maven dependency:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-features-encrypt-sm</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
 
 * SM4 Encrypt Algorithm
 
@@ -62,6 +120,16 @@ Attributes:
 | sm4-iv      | String     | SM4 IV (should be specified on CBC, 16 bytes long)                       |
 | sm4-padding | String     | SM4 PADDING (should be PKCS5Padding or PKCS7Padding, NoPadding excepted) |
 
+Maven dependency:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-features-encrypt-sm</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
 ### Sharding Feature Plug-in
 
 #### Distributed Key Generator
@@ -71,6 +139,16 @@ Attributes:
 Type:NANOID
 
 Configurable Property:none
+
+Maven dependency:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-features-sharding-nanoid</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
 
 * CosId
 
@@ -83,6 +161,16 @@ Attributes：
 | id-name   | String     | ID generator name                                                                                                                                                                  | `__share__`     |
 | as-string | bool       | Whether to generate a string type ID: Convert `long` type ID to Base-62 `String` type (`Long.MAX_VALUE` maximum string length is 11 digits), and ensure the ordering of string IDs | `false`         |
 
+Maven dependency:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-features-sharding-cosid</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
 * CosId-Snowflake
 
 Type: COSID_SNOWFLAKE
@@ -93,6 +181,16 @@ Attributes：
 |-----------|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
 | epoch     | String     | EPOCH of Snowflake ID Algorithm                                                                                                                                                    | `1477929600000` |
 | as-string | bool       | Whether to generate a string type ID: Convert `long` type ID to Base-62 `String` type (`Long.MAX_VALUE` maximum string length is 11 digits), and ensure the ordering of string IDs | `false`         |
+
+Maven dependency:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-features-sharding-cosid</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
 
 #### Sharding Algorithm
 
@@ -116,6 +214,16 @@ Attributes：
 | datetime-interval-unit   | String     | Unit of sharding value interval, must can be transformed to Java ChronoUnit's Enum value. For example: MONTHS                                                           |                 |
 | datetime-interval-amount | int        | Interval of sharding value, after which the next shard will be entered                                                                                                  |
 
+Maven dependency:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-features-sharding-cosid</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
 * Snowflake key-based fixed interval sharding algorithm provided by CosId
 
 Snowflake ID sharding algorithm with fixed time range implemented by tool class based on `me.ahoo.cosid:cosid-core`.
@@ -136,6 +244,16 @@ Attributes：
 | datetime-interval-unit   | String     | Unit of sharding value interval, must can be transformed to Java ChronoUnit's Enum value. For example: MONTHS                                                           |                 |
 | datetime-interval-amount | int        | Interval of sharding value, after which the next shard will be entered                                                                                                  |
 
+Maven dependency:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-features-sharding-cosid</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
 * Modulo sharding algorithm provided by CosId
 
 Modulo sharding algorithm implemented by the tool class based on `me.ahoo.cosid:cosid-core`.
@@ -149,6 +267,16 @@ Attributes:
 |-------------------|------------|---------------------------------------------------|
 | mod               | int        | Sharding count                                    |
 | logic-name-prefix | String     | Prefix pattern of sharding data sources or tables |
+
+Maven dependency:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-features-sharding-cosid</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
 
 ## Infra Plug-in
 
@@ -171,6 +299,16 @@ dataSources:
     password:
 ```
 
+Maven dependency:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-infra-data-source-pool-c3p0</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
 * DBCP Connection Pool
 
 Sample:
@@ -184,6 +322,14 @@ dataSources:
     password:
 ```
 
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-infra-data-source-pool-dbcp</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
 ## JDBC Adaptor Plug-in
 
 ### JDBC Driver Config Plug-in
@@ -195,6 +341,16 @@ ShardingSphere-JDBC provides a JDBC Driver, which can be used only through confi
 Load JDBC URL of the yaml configuration file in the specified namespace of apollo:
 ```
 jdbc:shardingsphere:apollo:TEST.test_namespace
+```
+
+Maven dependency:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-jdbc-driver-apollo</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
 ```
 
 ## Mode Plug-in
@@ -215,3 +371,13 @@ Attributes:
 | retryIntervalMilliseconds | long   | Milliseconds of retry interval                    | 500             |
 | maxRetries                | int    | Max retries for client to check data availability | 3               |
 | timeToLiveSeconds         | int    | Seconds of ephemeral instance live                | 30              |
+
+Maven dependency:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-mode-cluster-repository-nacos</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```

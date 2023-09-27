@@ -1,3 +1,23 @@
+# 目录
+
+* [目录](#目录)
+* [概述](#概述)
+* [说明](#说明)
+* [插件实现](#插件实现)
+    * [功能插件](#功能插件)
+        * [加密功能插件](#加密功能插件)
+            * [模糊加密算法插件](#模糊加密算法插件)
+            * [标准加密算法插件](#标准加密算法插件)
+        * [分片功能插件](#分片功能插件)
+            * [分布式主键生成插件](#分布式主键生成插件)
+            * [分片算法插件](#分片算法插件)
+    * [基础设施插件](#基础设施插件)
+        * [连接池插件](#连接池插件)
+    * [JDBC 接入端插件](#jdbc-接入端插件)
+        * [JDBC Driver 配置插件](#jdbc-driver-配置插件)
+    * [治理中心插件](#治理中心插件)
+        * [治理中心集群模式持久化插件](#治理中心集群模式持久化插件)
+
 # 概述
 
 ShardingSphere Plugin 旨在为 ShardingSphere 可插拔架构提供插件实现，可以参考 [ShardingSphere 开发者手册](https://shardingsphere.apache.org/document/current/cn/dev-manual/) 对 SPI 进行扩展。
@@ -5,6 +25,14 @@ ShardingSphere Plugin 旨在为 ShardingSphere 可插拔架构提供插件实现
 
 [![EN doc](https://img.shields.io/badge/document-English-blue.svg)](https://github.com/apache/shardingsphere-plugin/blob/main/README.md)
 [![CN doc](https://img.shields.io/badge/文档-中文版-blue.svg)](https://github.com/apache/shardingsphere-plugin/blob/main/README_ZH.md)
+
+# 说明
+
+ShardingSphere Plugin 仓库中的插件会和 ShardingSphere 保持相同的发布节奏，可以在 https://central.sonatype.com/ 进行检索，并安装到 ShardingSphere 中。
+用户使用 ShardingSphere-JDBC 时，只需要将 maven 依赖添加到项目中即可完成插件安装，使用 ShardingSphere-Proxy 时，需要下载插件 jar 包及插件可能依赖的 jar 包，然后拷贝到 ShardingSphere-Proxy 的 `ext-lib` 目录下。
+
+开发者贡献新的插件时，需要参考 [贡献者指南](https://shardingsphere.apache.org/community/cn/involved/contribute/contributor/)，先执行 `./mvnw clean install -DskipITs -DskipTests -Prelease` 打包 ShardingSphere 基础 SPI 及测试组件，然后再新建模块进行插件开发。
+新开发的插件代码需要遵循 [ShardingSphere 开发规范](https://shardingsphere.apache.org/community/cn/involved/conduct/code/)。
 
 # 插件实现
 
@@ -27,6 +55,16 @@ ShardingSphere Plugin 旨在为 ShardingSphere 可插拔架构提供插件实现
 | start | int    | 密文Unicode初始码（十进制）  |
 | dict  | String | 常见字                |
 
+Maven 依赖:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-features-encrypt-like</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
 #### 标准加密算法插件
 
 * RC4 加密算法
@@ -39,6 +77,16 @@ ShardingSphere Plugin 旨在为 ShardingSphere 可插拔架构提供插件实现
 |---------------|--------|-------------|
 | rc4-key-value | String | RC4 使用的 KEY |
 
+Maven 依赖:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-features-encrypt-rc4</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
 * SM3 加密算法
 
 类型：SM3
@@ -48,6 +96,16 @@ ShardingSphere Plugin 旨在为 ShardingSphere 可插拔架构提供插件实现
 | 名称        | 数据类型 | 说明         |
 | ------------- | --------- | ------------- |
 | sm3-salt      | String    | SM3 使用的 SALT（空 或 8 Bytes） |
+
+Maven 依赖:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-features-encrypt-sm</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
 
 * SM4 加密算法
 
@@ -62,6 +120,16 @@ ShardingSphere Plugin 旨在为 ShardingSphere 可插拔架构提供插件实现
 | sm4-iv        | String    | SM4 使用的 IV （MODE为CBC时需指定，16 Bytes）|
 | sm4-padding   | String    | SM4 使用的 PADDING （PKCS5Padding 或 PKCS7Padding，暂不支持NoPadding）|
 
+Maven 依赖:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-features-encrypt-sm</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
 ### 分片功能插件
 
 #### 分布式主键生成插件
@@ -71,6 +139,16 @@ ShardingSphere Plugin 旨在为 ShardingSphere 可插拔架构提供插件实现
 类型：NANOID
 
 可配置属性： 无
+
+Maven 依赖:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-features-sharding-nanoid</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
 
 * CosId
 
@@ -83,6 +161,16 @@ ShardingSphere Plugin 旨在为 ShardingSphere 可插拔架构提供插件实现
 | id-name   | String | ID 生成器名称                                                                                     | `__share__` |
 | as-string | bool   | 是否生成字符串类型ID: 将 `long` 类型 ID 转换成 62 进制 `String` 类型（`Long.MAX_VALUE` 最大字符串长度11位），并保证字符串 ID 有序性 | `false`     |
 
+Maven 依赖:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-features-sharding-cosid</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
 * CosId-Snowflake
 
 类型: COSID_SNOWFLAKE
@@ -93,6 +181,16 @@ ShardingSphere Plugin 旨在为 ShardingSphere 可插拔架构提供插件实现
 |-----------|--------|----------------------------------------------------------------------------------------------|-----------------|
 | epoch     | String | 雪花 ID 算法的 EPOCH                                                                              | `1477929600000` |
 | as-string | bool   | 是否生成字符串类型ID: 将 `long` 类型 ID 转换成 62 进制 `String` 类型（`Long.MAX_VALUE` 最大字符串长度11位），并保证字符串 ID 有序性 | `false`         |
+
+Maven 依赖:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-features-sharding-cosid</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
 
 #### 分片算法插件
 
@@ -116,6 +214,16 @@ ShardingSphere Plugin 旨在为 ShardingSphere 可插拔架构提供插件实现
 | datetime-interval-unit   | String | 分片键时间间隔单位，必须遵循 Java ChronoUnit 的枚举值。例如：MONTHS                                              |       |
 | datetime-interval-amount | int    | 分片键时间间隔，超过该时间间隔将进入下一分片                                                                     |       |
 
+Maven 依赖:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-features-sharding-cosid</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
 * 基于 CosId 的雪花ID固定时间范围的分片算法
 
 基于 `me.ahoo.cosid:cosid-core` 的工具类实现的雪花ID固定时间范围的分片算法。
@@ -136,6 +244,16 @@ ShardingSphere Plugin 旨在为 ShardingSphere 可插拔架构提供插件实现
 | datetime-interval-unit   | String | 分片键时间间隔单位，必须遵循 Java ChronoUnit 的枚举值。例如：MONTHS                                              |       |
 | datetime-interval-amount | int    | 分片键时间间隔，超过该时间间隔将进入下一分片                                                                     |       |
 
+Maven 依赖:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-features-sharding-cosid</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
 * 基于 CosId 的取模分片算法
 
 基于 `me.ahoo.cosid:cosid-core` 的工具类实现的取模分片算法。
@@ -149,6 +267,16 @@ ShardingSphere Plugin 旨在为 ShardingSphere 可插拔架构提供插件实现
 |-------------------|--------|----------------|
 | mod               | int    | 分片数量           |
 | logic-name-prefix | String | 分片数据源或真实表的前缀格式 |
+
+Maven 依赖:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-features-sharding-cosid</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
 
 ## 基础设施插件
 
@@ -171,6 +299,16 @@ dataSources:
     password:
 ```
 
+Maven 依赖:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-infra-data-source-pool-c3p0</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
 * DBCP 连接池
 
 配置示例：
@@ -184,6 +322,16 @@ dataSources:
     password:
 ```
 
+Maven 依赖:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-infra-data-source-pool-dbcp</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
 ## JDBC 接入端插件
 
 ### JDBC Driver 配置插件
@@ -195,6 +343,16 @@ ShardingSphere-JDBC 提供了 JDBC 驱动，可以仅通过配置变更即可使
 加载 apollo 指定 namespace 中的 yaml 配置文件的 JDBC URL：
 ```
 jdbc:shardingsphere:apollo:TEST.test_namespace
+```
+
+Maven 依赖:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-jdbc-driver-apollo</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
 ```
 
 ## 治理中心插件
@@ -215,3 +373,13 @@ jdbc:shardingsphere:apollo:TEST.test_namespace
 | retryIntervalMilliseconds | long   | 重试间隔毫秒数           | 500    |
 | maxRetries                | int    | 客户端检查数据可用性的最大重试次数 | 3      |
 | timeToLiveSeconds         | int    | 临时实例失效的秒数         | 30     |
+
+Maven 依赖:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-mode-cluster-repository-nacos</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
