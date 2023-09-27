@@ -20,7 +20,7 @@
 
 # OVERVIEW
 
-ShardingSphere Plugin is designed to provide a plug-in implementation for ShardingSphere pluggable architecture. You can refer to [ShardingSphere dev manual](https://shardingsphere.apache.org/document/current/en/dev-manual/) to extend the SPI.
+ShardingSphere Plugin is designed to provide a plug-in implementation for ShardingSphere pluggable architecture. You can refer to ShardingSphere [Dev Manual](https://shardingsphere.apache.org/document/current/en/dev-manual/) to extend the SPI.
 Developers are welcome to contribute to the implementation of plug-ins and build a distributed database ecosystem of ShardingSphere.
 
 [![EN doc](https://img.shields.io/badge/document-English-blue.svg)](https://github.com/apache/shardingsphere-plugin/blob/main/README.md)
@@ -32,7 +32,7 @@ These plugins can be found in [ShardingSphere Plugins](https://github.com/apache
 When using ShardingSphere-JDBC, users only need to add maven dependencies to the project to complete the plug-in installation. When using ShardingSphere-Proxy, they need to download the plug-in jar package and the jar packages that the plug-in may depend on, and then copy them to ShardingSphere-Proxy `ext-lib` directory.
 
 When developers contribute new plug-ins, they need to refer to [Contributor Guide](https://shardingsphere.apache.org/community/en/involved/contribute/contributor/) and first execute `./mvnw clean install -DskipITs -DskipTests -Prelease` to package ShardingSphere basic SPI and test components, and then create a new module for plug-in development.
-Newly developed plug-in code needs to follow [ShardingSphere development specifications](https://shardingsphere.apache.org/community/en/involved/conduct/code/).
+Newly developed plug-in code needs to follow ShardingSphere [Code of Conduct](https://shardingsphere.apache.org/community/en/involved/conduct/code/).
 
 # Plug-in Implementation
 

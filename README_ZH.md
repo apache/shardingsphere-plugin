@@ -20,7 +20,7 @@
 
 # 概述
 
-ShardingSphere Plugin 旨在为 ShardingSphere 可插拔架构提供插件实现，可以参考 [ShardingSphere 开发者手册](https://shardingsphere.apache.org/document/current/cn/dev-manual/) 对 SPI 进行扩展。
+ShardingSphere Plugin 旨在为 ShardingSphere 可插拔架构提供插件实现，可以参考 ShardingSphere [开发者手册](https://shardingsphere.apache.org/document/current/cn/dev-manual/)对 SPI 进行扩展。
 欢迎广大开发者们积极贡献插件实现，一起打造 ShardingSphere 分布式的数据库生态系统。
 
 [![EN doc](https://img.shields.io/badge/document-English-blue.svg)](https://github.com/apache/shardingsphere-plugin/blob/main/README.md)
@@ -31,8 +31,8 @@ ShardingSphere Plugin 旨在为 ShardingSphere 可插拔架构提供插件实现
 ShardingSphere Plugin 仓库中的插件会和 ShardingSphere 保持相同的发布节奏，可以在 https://central.sonatype.com/ 进行检索，并安装到 ShardingSphere 中。
 用户使用 ShardingSphere-JDBC 时，只需要将 maven 依赖添加到项目中即可完成插件安装，使用 ShardingSphere-Proxy 时，需要下载插件 jar 包及插件可能依赖的 jar 包，然后拷贝到 ShardingSphere-Proxy 的 `ext-lib` 目录下。
 
-开发者贡献新的插件时，需要参考 [贡献者指南](https://shardingsphere.apache.org/community/cn/involved/contribute/contributor/)，先执行 `./mvnw clean install -DskipITs -DskipTests -Prelease` 打包 ShardingSphere 基础 SPI 及测试组件，然后再新建模块进行插件开发。
-新开发的插件代码需要遵循 [ShardingSphere 开发规范](https://shardingsphere.apache.org/community/cn/involved/conduct/code/)。
+开发者贡献新的插件时，需要参考[贡献者指南](https://shardingsphere.apache.org/community/cn/involved/contribute/contributor/)，先执行 `./mvnw clean install -DskipITs -DskipTests -Prelease` 打包 ShardingSphere 基础 SPI 及测试组件，然后再新建模块进行插件开发。
+新开发的插件代码需要遵循 ShardingSphere [开发规范](https://shardingsphere.apache.org/community/cn/involved/conduct/code/)。
 
 # 插件实现
 
