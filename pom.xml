@@ -33,9 +33,8 @@
     <modules>
         <module>features</module>
         <module>infra</module>
-        <module>features/encrypt/like</module>
-        <module>mode</module>
         <module>jdbc</module>
+        <module>mode</module>
     </modules>
     
     <properties>

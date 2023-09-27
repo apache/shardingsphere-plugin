@@ -20,10 +20,10 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.apache.shardingsphere</groupId>
-        <artifactId>shardingsphere-plugin-feature-sharding</artifactId>
+        <artifactId>shardingsphere-plugin-features-sharding</artifactId>
         <version>5.4.1-SNAPSHOT</version>
     </parent>
-    <artifactId>shardingsphere-plugin-feature-sharding-cosid</artifactId>
+    <artifactId>shardingsphere-plugin-features-sharding-cosid</artifactId>
     <name>${project.artifactId}</name>
     
     <properties>
@@ -41,10 +41,6 @@
             <groupId>me.ahoo.cosid</groupId>
             <artifactId>cosid-core</artifactId>
             <version>${cosid.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
     

@@ -23,7 +23,7 @@
         <artifactId>shardingsphere-plugin-features</artifactId>
         <version>5.4.1-SNAPSHOT</version>
     </parent>
-    <artifactId>shardingsphere-plugin-feature-sharding</artifactId>
+    <artifactId>shardingsphere-plugin-features-sharding</artifactId>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     
