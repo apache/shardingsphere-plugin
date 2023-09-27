@@ -27,6 +27,8 @@ on:
       - '**/src/test/**'
       - '!distribution/**'
       - '!*.md'
+  schedule:
+    - cron: '0 18 */1 * *'  # once a day. UTC time
   workflow_dispatch:
 
 concurrency:
