@@ -33,6 +33,9 @@
     <modules>
         <module>features</module>
         <module>infra</module>
+        <module>features/encrypt/like</module>
+        <module>mode</module>
+        <module>jdbc</module>
     </modules>
     
     <properties>
@@ -57,6 +60,7 @@
         <commons-codec.version>1.15</commons-codec.version>
         <lombok.version>1.18.20</lombok.version>
         <junit.version>5.9.2</junit.version>
+        <apollo-client.version>1.9.0</apollo-client.version>
         
         <!-- Compile plugin versions -->
         <maven-enforcer-plugin.version>3.2.1</maven-enforcer-plugin.version>
@@ -77,6 +81,12 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.ctrip.framework.apollo</groupId>
+                <artifactId>apollo-client</artifactId>
+                <version>${apollo-client.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
