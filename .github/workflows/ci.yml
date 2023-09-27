@@ -1,0 +1,67 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+name: CI
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/ci.yml'
+      - '**/pom.xml'
+      - '**/src/main/**'
+      - '**/src/test/**'
+      - '!distribution/**'
+      - '!*.md'
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  MAVEN_OPTS: -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.http.retryHandler.class=standard -Dmaven.wagon.http.retryHandler.count=3
+
+jobs:
+  ci:
+    if: github.repository == 'apache/shardingsphere-plugin'
+    name: CI
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+        with:
+          repository: apache/shardingsphere
+          path: shardingsphere
+      - name: Setup JDK 11 for Build
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 11
+      - uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: shardingsphere-plugin-maven-third-party--${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            shardingsphere-plugin-maven-third-party-
+      - name: Build Project with Maven
+        run: |
+          cd shardingsphere
+          ./mvnw clean install -DskipTests && cd ..
+          ./mvnw clean install -DskipTests
+
