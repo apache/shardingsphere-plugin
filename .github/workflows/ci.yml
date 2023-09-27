@@ -66,4 +66,3 @@ jobs:
           cd shardingsphere
           ./mvnw clean install -DskipTests && cd ..
           ./mvnw clean install -DskipTests
-
