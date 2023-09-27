@@ -20,10 +20,10 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.apache.shardingsphere</groupId>
-        <artifactId>shardingsphere-plugin-feature-sharding</artifactId>
+        <artifactId>shardingsphere-plugin-features-sharding</artifactId>
         <version>5.4.1-SNAPSHOT</version>
     </parent>
-    <artifactId>shardingsphere-plugin-feature-sharding-nanoid</artifactId>
+    <artifactId>shardingsphere-plugin-features-sharding-nanoid</artifactId>
     <name>${project.artifactId}</name>
     
     <properties>

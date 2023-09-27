@@ -28,7 +28,7 @@
     <name>${project.artifactId}</name>
     
     <modules>
-        <module>sharding</module>
         <module>encrypt</module>
+        <module>sharding</module>
     </modules>
 </project>

@@ -23,11 +23,13 @@
         <artifactId>shardingsphere-plugin-features</artifactId>
         <version>5.4.1-SNAPSHOT</version>
     </parent>
-    <artifactId>shardingsphere-plugin-feature-encrypt</artifactId>
+    <artifactId>shardingsphere-plugin-features-encrypt</artifactId>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     
     <modules>
+        <module>like</module>
+        <module>rc4</module>
         <module>sm</module>
     </modules>
 </project>
