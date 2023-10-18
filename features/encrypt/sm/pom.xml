@@ -30,13 +30,13 @@
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
             <artifactId>shardingsphere-encrypt-api</artifactId>
-            <version>${project.version}</version>
+            <version>${shardingsphere.version}</version>
         </dependency>
         
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
             <artifactId>shardingsphere-encrypt-core</artifactId>
-            <version>${project.version}</version>
+            <version>${shardingsphere.version}</version>
         </dependency>
         
         <dependency>
