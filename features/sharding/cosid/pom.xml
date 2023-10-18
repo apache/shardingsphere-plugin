@@ -34,7 +34,7 @@
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
             <artifactId>shardingsphere-sharding-api</artifactId>
-            <version>${project.version}</version>
+            <version>${shardingsphere.version}</version>
         </dependency>
         
         <dependency>
