@@ -3,42 +3,42 @@
 * [Table of Contents](#table-of-contents)
 * [Overview](#overview)
 * [Instruction](#instruction)
-* [Plug-in Implementation](#plug-in-implementation)
-    * [Feature Plug-in](#feature-plug-in)
-        * [Encrypt Feature Plug-in](#encrypt-feature-plug-in)
+* [Plugin Implementation](#plugin-implementation)
+    * [Feature Plugin](#feature-plugin)
+        * [Encrypt Feature Plugin](#encrypt-feature-plugin)
             * [Like Encrypt Algorithm](#like-encrypt-algorithm)
             * [Standard Encrypt Algorithm](#standard-encrypt-algorithm)
-        * [Sharding Feature Plug-in](#sharding-feature-plug-in)
+        * [Sharding Feature Plugin](#sharding-feature-plugin)
             * [Distributed Key Generator](#distributed-key-generator)
             * [Sharding Algorithm](#sharding-algorithm)
-    * [Infra Plug-in](#infra-plug-in)
-        * [Connection Pool Plug-in](#connection-pool-plug-in)
-    * [JDBC Adaptor Plug-in](#jdbc-adaptor-plug-in)
-        * [JDBC Driver Config Plug-in](#jdbc-driver-config-plug-in)
-    * [Mode Plug-in](#mode-plug-in)
-        * [Mode Cluster Repository Plug-in](#mode-cluster-repository-plug-in)
+    * [Infra Plugin](#infra-plugin)
+        * [Connection Pool Plugin](#connection-pool-plugin)
+    * [JDBC Adaptor Plugin](#jdbc-adaptor-plugin)
+        * [JDBC Driver Config Plugin](#jdbc-driver-config-plugin)
+    * [Mode Plugin](#mode-plugin)
+        * [Mode Cluster Repository Plugin](#mode-cluster-repository-plugin)
 
 # Overview
 
-ShardingSphere Plugin is designed to provide a plug-in implementation for ShardingSphere pluggable architecture. You can refer to ShardingSphere [Dev Manual](https://shardingsphere.apache.org/document/current/en/dev-manual/) to extend the SPI.
-Developers are welcome to contribute to the implementation of plug-ins and build a distributed database ecosystem of ShardingSphere.
+ShardingSphere plugin is designed to provide a plugin implementation for ShardingSphere pluggable architecture. You can refer to ShardingSphere [Dev Manual](https://shardingsphere.apache.org/document/current/en/dev-manual/) to extend the SPI.
+Developers are welcome to contribute to the implementation of plugins and build a distributed database ecosystem of ShardingSphere.
 
 [![EN doc](https://img.shields.io/badge/document-English-blue.svg)](https://github.com/apache/shardingsphere-plugin/blob/main/README.md)
 [![CN doc](https://img.shields.io/badge/文档-中文版-blue.svg)](https://github.com/apache/shardingsphere-plugin/blob/main/README_ZH.md)
 
 # Instruction
 
-These plugins can be found in [ShardingSphere Plugins](https://github.com/apache/shardingsphere-plugin) repository. Plugins in ShardingSphere Plugin repository would remain the same release plan with ShardingSphere, they can be retrieved at https://central.sonatype.com/, and install into ShardingSphere.
-When using ShardingSphere-JDBC, users only need to add maven dependencies to the project to complete the plug-in installation. When using ShardingSphere-Proxy, they need to download the plug-in jar package and the jar packages that the plug-in may depend on, and then copy them to ShardingSphere-Proxy `ext-lib` directory.
+These plugins can be found in [ShardingSphere plugin](https://github.com/apache/shardingsphere-plugin) repository. Plugins in ShardingSphere plugin repository would remain the same release plan with ShardingSphere, they can be retrieved at https://central.sonatype.com/, and install into ShardingSphere.
+When using ShardingSphere-JDBC, users only need to add maven dependencies to the project to complete the plugin installation. When using ShardingSphere-Proxy, they need to download the plugin jar package and the jar packages that the plugin may depend on, and then copy them to ShardingSphere-Proxy `ext-lib` directory.
 
-When developers contribute new plug-ins, they need to refer to [Contributor Guide](https://shardingsphere.apache.org/community/en/involved/contribute/contributor/) and first execute `./mvnw clean install -DskipITs -DskipTests -Prelease` to package ShardingSphere basic SPI and test components, and then create a new module for plug-in development.
-Newly developed plug-in code needs to follow ShardingSphere [Code of Conduct](https://shardingsphere.apache.org/community/en/involved/conduct/code/).
+When developers contribute new plugins, they need to refer to [Contributor Guide](https://shardingsphere.apache.org/community/en/involved/contribute/contributor/) and first execute `./mvnw clean install -DskipITs -DskipTests -Prelease` to package ShardingSphere basic SPI and test components, and then create a new module for plugin development.
+Newly developed plugin code needs to follow ShardingSphere [Code of Conduct](https://shardingsphere.apache.org/community/en/involved/conduct/code/).
 
-# Plug-in Implementation
+# Plugin Implementation
 
-## Feature Plug-in
+## Feature Plugin
 
-### Encrypt Feature Plug-in
+### Encrypt Feature Plugin
 
 #### Like Encrypt Algorithm
 
@@ -130,7 +130,7 @@ Maven dependency:
 </dependency>
 ```
 
-### Sharding Feature Plug-in
+### Sharding Feature Plugin
 
 #### Distributed Key Generator
 
@@ -278,9 +278,9 @@ Maven dependency:
 </dependency>
 ```
 
-## Infra Plug-in
+## Infra Plugin
 
-### Connection Pool Plug-in
+### Connection Pool Plugin
 
 ShardingSphere-Proxy supports common data source connection pools: HikariCP, C3P0, DBCP.
 
@@ -330,9 +330,9 @@ dataSources:
 </dependency>
 ```
 
-## JDBC Adaptor Plug-in
+## JDBC Adaptor Plugin
 
-### JDBC Driver Config Plug-in
+### JDBC Driver Config Plugin
 
 ShardingSphere-JDBC provides a JDBC Driver, which can be used only through configuration changes without rewriting the code.
 
@@ -353,9 +353,9 @@ Maven dependency:
 </dependency>
 ```
 
-## Mode Plug-in
+## Mode Plugin
 
-### Mode Cluster Repository Plug-in
+### Mode Cluster Repository Plugin
 
 * Nacos Repository
 
