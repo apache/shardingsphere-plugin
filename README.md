@@ -1,7 +1,7 @@
 # Table of Contents
 
 * [Table of Contents](#table-of-contents)
-* [OVERVIEW](#overview)
+* [Overview](#overview)
 * [Instruction](#instruction)
 * [Plug-in Implementation](#plug-in-implementation)
     * [Feature Plug-in](#feature-plug-in)
@@ -18,7 +18,7 @@
     * [Mode Plug-in](#mode-plug-in)
         * [Mode Cluster Repository Plug-in](#mode-cluster-repository-plug-in)
 
-# OVERVIEW
+# Overview
 
 ShardingSphere Plugin is designed to provide a plug-in implementation for ShardingSphere pluggable architecture. You can refer to ShardingSphere [Dev Manual](https://shardingsphere.apache.org/document/current/en/dev-manual/) to extend the SPI.
 Developers are welcome to contribute to the implementation of plug-ins and build a distributed database ecosystem of ShardingSphere.
