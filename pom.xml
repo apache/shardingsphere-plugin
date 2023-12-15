@@ -25,7 +25,7 @@
     </parent>
     <groupId>org.apache.shardingsphere</groupId>
     <artifactId>shardingsphere-plugin</artifactId>
-    <version>5.4.1-SNAPSHOT</version>
+    <version>5.4.1.1</version>
     <packaging>pom</packaging>
     <name>Apache ShardingSphere Plugin</name>
     <description>Provide plugins for ShardingSphere pluggable architecture</description>
@@ -214,6 +214,6 @@
         <connection>scm:git:https://github.com/apache/shardingsphere-plugin.git</connection>
         <developerConnection>scm:git:https://github.com/apache/shardingsphere-plugin.git</developerConnection>
         <url>https://github.com/apache/shardingsphere-plugin.git</url>
-        <tag>HEAD</tag>
+        <tag>5.4.1.1</tag>
     </scm>
 </project>
