@@ -20,14 +20,33 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.apache.shardingsphere</groupId>
-        <artifactId>shardingsphere-plugin</artifactId>
+        <artifactId>shardingsphere-plugin-jdbc-driver</artifactId>
         <version>5.4.2-SNAPSHOT</version>
     </parent>
-    <artifactId>shardingsphere-plugin-infra</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>shardingsphere-plugin-jdbc-driver-apollo</artifactId>
     <name>${project.artifactId}</name>
     
-    <modules>
-        <module>data-source-pool</module>
-    </modules>
+    <properties>
+        <nacos.version>1.4.2</nacos.version>
+    </properties>
+    
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>shardingsphere-jdbc-core</artifactId>
+            <version>${shardingsphere.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>shardingsphere-test-util</artifactId>
+            <version>${shardingsphere.version}</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.ctrip.framework.apollo</groupId>
+            <artifactId>apollo-client</artifactId>
+        </dependency>
+    </dependencies>
 </project>
