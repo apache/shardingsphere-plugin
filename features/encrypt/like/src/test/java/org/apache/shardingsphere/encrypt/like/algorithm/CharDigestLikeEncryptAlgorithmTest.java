@@ -18,7 +18,6 @@
 package org.apache.shardingsphere.encrypt.like.algorithm;
 
 import org.apache.shardingsphere.encrypt.api.context.EncryptContext;
-import org.apache.shardingsphere.encrypt.api.encrypt.like.LikeEncryptAlgorithm;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
 import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,20 +32,20 @@ import static org.mockito.Mockito.mock;
 
 class CharDigestLikeEncryptAlgorithmTest {
     
-    private LikeEncryptAlgorithm englishLikeEncryptAlgorithm;
+    private EncryptAlgorithm englishLikeEncryptAlgorithm;
     
-    private LikeEncryptAlgorithm chineseLikeEncryptAlgorithm;
+    private EncryptAlgorithm chineseLikeEncryptAlgorithm;
     
-    private LikeEncryptAlgorithm koreanLikeEncryptAlgorithm;
+    private EncryptAlgorithm koreanLikeEncryptAlgorithm;
     
     @BeforeEach
     void setUp() {
-        englishLikeEncryptAlgorithm = (LikeEncryptAlgorithm) TypedSPILoader.getService(EncryptAlgorithm.class, "CHAR_DIGEST_LIKE");
-        chineseLikeEncryptAlgorithm = (LikeEncryptAlgorithm) TypedSPILoader.getService(EncryptAlgorithm.class, "CHAR_DIGEST_LIKE");
+        englishLikeEncryptAlgorithm = TypedSPILoader.getService(EncryptAlgorithm.class, "CHAR_DIGEST_LIKE");
+        chineseLikeEncryptAlgorithm = TypedSPILoader.getService(EncryptAlgorithm.class, "CHAR_DIGEST_LIKE");
         Properties props = new Properties();
         props.put("dict", "한국어시험");
         props.put("start", "44032");
-        koreanLikeEncryptAlgorithm = (LikeEncryptAlgorithm) TypedSPILoader.getService(EncryptAlgorithm.class, "CHAR_DIGEST_LIKE", props);
+        koreanLikeEncryptAlgorithm = TypedSPILoader.getService(EncryptAlgorithm.class, "CHAR_DIGEST_LIKE", props);
     }
     
     @Test
