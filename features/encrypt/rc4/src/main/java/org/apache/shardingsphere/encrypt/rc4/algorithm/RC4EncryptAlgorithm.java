@@ -49,7 +49,7 @@ public final class RC4EncryptAlgorithm implements EncryptAlgorithm {
     @Override
     public void init(final Properties props) {
         key = getKey(props);
-        metaData = new EncryptAlgorithmMetaData();
+        metaData = new EncryptAlgorithmMetaData(false, false, false);
     }
     
     private byte[] getKey(final Properties props) {

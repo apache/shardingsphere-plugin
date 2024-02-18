@@ -74,10 +74,7 @@ public final class CharDigestLikeEncryptAlgorithm implements EncryptAlgorithm {
         mask = createMask(props);
         start = createStart(props);
         charIndexes = createCharIndexes(props);
-        EncryptAlgorithmMetaData encryptAlgorithmMetaData = new EncryptAlgorithmMetaData();
-        encryptAlgorithmMetaData.setSupportDecrypt(false);
-        encryptAlgorithmMetaData.setSupportLike(true);
-        metaData = encryptAlgorithmMetaData;
+        metaData = new EncryptAlgorithmMetaData(false, false, true);
     }
     
     private int createDelta(final Properties props) {

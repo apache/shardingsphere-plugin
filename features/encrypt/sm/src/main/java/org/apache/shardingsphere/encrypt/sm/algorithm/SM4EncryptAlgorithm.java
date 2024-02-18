@@ -82,7 +82,7 @@ public final class SM4EncryptAlgorithm implements EncryptAlgorithm {
         sm4ModePadding = "SM4/" + sm4Mode + "/" + sm4Padding;
         sm4Key = createSm4Key(props);
         sm4Iv = createSm4Iv(props, sm4Mode);
-        metaData = new EncryptAlgorithmMetaData();
+        metaData = new EncryptAlgorithmMetaData(false, false, false);
     }
     
     private String createSm4Mode(final Properties props) {
