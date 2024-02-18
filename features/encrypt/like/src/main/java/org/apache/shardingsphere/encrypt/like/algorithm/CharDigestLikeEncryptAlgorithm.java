@@ -19,10 +19,12 @@ package org.apache.shardingsphere.encrypt.like.algorithm;
 
 import com.google.common.base.Strings;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import org.apache.shardingsphere.encrypt.api.context.EncryptContext;
-import org.apache.shardingsphere.encrypt.api.encrypt.like.LikeEncryptAlgorithm;
 import org.apache.shardingsphere.encrypt.exception.algorithm.EncryptAlgorithmInitializationException;
+import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
+import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithmMetaData;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,7 +39,7 @@ import java.util.stream.IntStream;
  * Char digest like encrypt algorithm.
  */
 @EqualsAndHashCode
-public final class CharDigestLikeEncryptAlgorithm implements LikeEncryptAlgorithm {
+public final class CharDigestLikeEncryptAlgorithm implements EncryptAlgorithm {
     
     private static final String DELTA_KEY = "delta";
     
@@ -63,12 +65,16 @@ public final class CharDigestLikeEncryptAlgorithm implements LikeEncryptAlgorith
     
     private Map<Character, Integer> charIndexes;
     
+    @Getter
+    private EncryptAlgorithmMetaData metaData;
+    
     @Override
     public void init(final Properties props) {
         delta = createDelta(props);
         mask = createMask(props);
         start = createStart(props);
         charIndexes = createCharIndexes(props);
+        metaData = new EncryptAlgorithmMetaData(false, false, true);
     }
     
     private int createDelta(final Properties props) {
@@ -128,6 +134,11 @@ public final class CharDigestLikeEncryptAlgorithm implements LikeEncryptAlgorith
     @Override
     public String encrypt(final Object plainValue, final EncryptContext encryptContext) {
         return null == plainValue ? null : digest(String.valueOf(plainValue));
+    }
+    
+    @Override
+    public Object decrypt(final Object cipherValue, final EncryptContext encryptContext) {
+        throw new UnsupportedOperationException(String.format("Algorithm `%s` is unsupported to decrypt", getType()));
     }
     
     private String digest(final String plainValue) {

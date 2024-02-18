@@ -33,14 +33,29 @@
     <dependencies>
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
-            <artifactId>shardingsphere-sharding-api</artifactId>
+            <artifactId>shardingsphere-infra-common</artifactId>
             <version>${shardingsphere.version}</version>
         </dependency>
-        
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>shardingsphere-infra-key-generator-core</artifactId>
+            <version>${shardingsphere.version}</version>
+        </dependency>
         <dependency>
             <groupId>me.ahoo.cosid</groupId>
             <artifactId>cosid-core</artifactId>
             <version>${cosid.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>shardingsphere-test-util</artifactId>
+            <version>${shardingsphere.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>shardingsphere-sharding-api</artifactId>
+            <version>${shardingsphere.version}</version>
         </dependency>
     </dependencies>
     

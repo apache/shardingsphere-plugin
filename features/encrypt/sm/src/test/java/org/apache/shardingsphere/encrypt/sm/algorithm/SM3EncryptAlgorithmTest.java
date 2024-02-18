@@ -18,7 +18,6 @@
 package org.apache.shardingsphere.encrypt.sm.algorithm;
 
 import org.apache.shardingsphere.encrypt.api.context.EncryptContext;
-import org.apache.shardingsphere.encrypt.api.encrypt.standard.StandardEncryptAlgorithm;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
 import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,13 +32,13 @@ import static org.mockito.Mockito.mock;
 
 class SM3EncryptAlgorithmTest {
     
-    private StandardEncryptAlgorithm encryptAlgorithm;
+    private EncryptAlgorithm encryptAlgorithm;
     
     @BeforeEach
     void setUp() {
         Properties props = new Properties();
         props.put("sm3-salt", "test1234");
-        encryptAlgorithm = (StandardEncryptAlgorithm) TypedSPILoader.getService(EncryptAlgorithm.class, "SM3", props);
+        encryptAlgorithm = TypedSPILoader.getService(EncryptAlgorithm.class, "SM3", props);
     }
     
     @Test

@@ -18,7 +18,6 @@
 package org.apache.shardingsphere.encrypt.rc4.algorithm;
 
 import org.apache.shardingsphere.encrypt.api.context.EncryptContext;
-import org.apache.shardingsphere.encrypt.api.encrypt.standard.StandardEncryptAlgorithm;
 import org.apache.shardingsphere.encrypt.exception.algorithm.EncryptAlgorithmInitializationException;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
 import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
@@ -37,13 +36,13 @@ import static org.mockito.Mockito.mock;
 
 class RC4EncryptAlgorithmTest {
     
-    private StandardEncryptAlgorithm encryptAlgorithm;
+    private EncryptAlgorithm encryptAlgorithm;
     
     @BeforeEach
     void setUp() {
         Properties props = new Properties();
         props.put("rc4-key-value", "test-sharding");
-        encryptAlgorithm = (StandardEncryptAlgorithm) TypedSPILoader.getService(EncryptAlgorithm.class, "RC4", props);
+        encryptAlgorithm = TypedSPILoader.getService(EncryptAlgorithm.class, "RC4", props);
     }
     
     @Test

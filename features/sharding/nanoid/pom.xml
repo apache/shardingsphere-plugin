@@ -42,5 +42,10 @@
             <artifactId>jnanoid</artifactId>
             <version>${jnanoid.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>shardingsphere-infra-key-generator-core</artifactId>
+            <version>${shardingsphere.version}</version>
+        </dependency>
     </dependencies>
 </project>

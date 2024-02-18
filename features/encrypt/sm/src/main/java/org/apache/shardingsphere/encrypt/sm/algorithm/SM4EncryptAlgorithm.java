@@ -18,12 +18,14 @@
 package org.apache.shardingsphere.encrypt.sm.algorithm;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.shardingsphere.encrypt.api.context.EncryptContext;
-import org.apache.shardingsphere.encrypt.api.encrypt.standard.StandardEncryptAlgorithm;
 import org.apache.shardingsphere.encrypt.exception.algorithm.EncryptAlgorithmInitializationException;
+import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
+import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithmMetaData;
 import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
@@ -42,7 +44,7 @@ import java.util.Set;
  * SM4 encrypt algorithm.
  */
 @EqualsAndHashCode
-public final class SM4EncryptAlgorithm implements StandardEncryptAlgorithm {
+public final class SM4EncryptAlgorithm implements EncryptAlgorithm {
     
     static {
         Security.addProvider(new BouncyCastleProvider());
@@ -70,6 +72,9 @@ public final class SM4EncryptAlgorithm implements StandardEncryptAlgorithm {
     
     private String sm4ModePadding;
     
+    @Getter
+    private EncryptAlgorithmMetaData metaData;
+    
     @Override
     public void init(final Properties props) {
         String sm4Mode = createSm4Mode(props);
@@ -77,6 +82,7 @@ public final class SM4EncryptAlgorithm implements StandardEncryptAlgorithm {
         sm4ModePadding = "SM4/" + sm4Mode + "/" + sm4Padding;
         sm4Key = createSm4Key(props);
         sm4Iv = createSm4Iv(props, sm4Mode);
+        metaData = new EncryptAlgorithmMetaData(false, false, false);
     }
     
     private String createSm4Mode(final Properties props) {

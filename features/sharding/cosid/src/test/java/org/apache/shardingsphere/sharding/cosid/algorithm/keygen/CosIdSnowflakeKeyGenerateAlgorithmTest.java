@@ -30,9 +30,11 @@ import org.apache.shardingsphere.infra.instance.mode.ModeContextManager;
 import org.apache.shardingsphere.infra.lock.LockContext;
 import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
 import org.apache.shardingsphere.infra.util.eventbus.EventBusContext;
+import org.apache.shardingsphere.keygen.core.algorithm.KeyGenerateAlgorithm;
+import org.apache.shardingsphere.keygen.core.context.KeyGenerateContext;
+import org.apache.shardingsphere.keygen.core.exception.algorithm.KeyGenerateAlgorithmInitializationException;
 import org.apache.shardingsphere.sharding.cosid.algorithm.keygen.fixture.WorkerIdGeneratorFixture;
-import org.apache.shardingsphere.sharding.exception.ShardingPluginException;
-import org.apache.shardingsphere.sharding.spi.KeyGenerateAlgorithm;
+import org.apache.shardingsphere.test.util.PropertiesBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
@@ -63,8 +65,8 @@ class CosIdSnowflakeKeyGenerateAlgorithmTest {
         CosIdSnowflakeKeyGenerateAlgorithm algorithm = (CosIdSnowflakeKeyGenerateAlgorithm) TypedSPILoader.getService(KeyGenerateAlgorithm.class, "COSID_SNOWFLAKE");
         algorithm.setInstanceContext(new InstanceContext(new ComputeNodeInstance(mock(InstanceMetaData.class)), new WorkerIdGeneratorFixture(FIXTURE_WORKER_ID),
                 new ModeConfiguration("Standalone", null), mock(ModeContextManager.class), mock(LockContext.class), eventBusContext));
-        long firstActualKey = (Long) algorithm.generateKey();
-        long secondActualKey = (Long) algorithm.generateKey();
+        long firstActualKey = (Long) algorithm.generateKeys(mock(KeyGenerateContext.class), 1).iterator().next();
+        long secondActualKey = (Long) algorithm.generateKeys(mock(KeyGenerateContext.class), 1).iterator().next();
         SnowflakeIdState firstActualState = snowflakeIdStateParser.parse(firstActualKey);
         SnowflakeIdState secondActualState = snowflakeIdStateParser.parse(secondActualKey);
         assertThat(firstActualState.getMachineId(), is(FIXTURE_WORKER_ID));
@@ -88,7 +90,7 @@ class CosIdSnowflakeKeyGenerateAlgorithmTest {
         int mod2Counter = 0;
         int mod3Counter = 0;
         for (int i = 0; i < total; i++) {
-            long id = (Long) algorithm.generateKey();
+            long id = (Long) algorithm.generateKeys(mock(KeyGenerateContext.class), 1).iterator().next();
             int mod = (int) (id % divisor);
             switch (mod) {
                 case 0:
@@ -117,13 +119,12 @@ class CosIdSnowflakeKeyGenerateAlgorithmTest {
     
     @Test
     void assertGenerateKeyAsString() {
-        Properties props = new Properties();
-        props.put(CosIdSnowflakeKeyGenerateAlgorithm.AS_STRING_KEY, Boolean.TRUE.toString());
+        Properties props = PropertiesBuilder.build(new PropertiesBuilder.Property(CosIdSnowflakeKeyGenerateAlgorithm.AS_STRING_KEY, Boolean.TRUE.toString()));
         CosIdSnowflakeKeyGenerateAlgorithm algorithm = (CosIdSnowflakeKeyGenerateAlgorithm) TypedSPILoader.getService(KeyGenerateAlgorithm.class, "COSID_SNOWFLAKE", props);
         algorithm.setInstanceContext(new InstanceContext(new ComputeNodeInstance(mock(InstanceMetaData.class)),
                 new WorkerIdGeneratorFixture(FIXTURE_WORKER_ID), new ModeConfiguration("Standalone", null),
                 mock(ModeContextManager.class), mock(LockContext.class), eventBusContext));
-        Comparable<?> actualKey = algorithm.generateKey();
+        Comparable<?> actualKey = algorithm.generateKeys(mock(KeyGenerateContext.class), 1).iterator().next();
         assertThat(actualKey, instanceOf(String.class));
         String actualStringKey = (String) actualKey;
         assertThat(actualStringKey.length(), is(Radix62IdConverter.MAX_CHAR_SIZE));
@@ -135,7 +136,7 @@ class CosIdSnowflakeKeyGenerateAlgorithmTest {
     
     @Test
     void assertGenerateKeyWhenNoneInstanceContext() {
-        assertThrows(ShardingPluginException.class, () -> TypedSPILoader.getService(KeyGenerateAlgorithm.class, "COSID_SNOWFLAKE").generateKey());
+        assertThrows(KeyGenerateAlgorithmInitializationException.class, () -> TypedSPILoader.getService(KeyGenerateAlgorithm.class, "COSID_SNOWFLAKE").generateKeys(mock(KeyGenerateContext.class), 1));
     }
     
     @Test
@@ -154,8 +155,7 @@ class CosIdSnowflakeKeyGenerateAlgorithmTest {
     
     @Test
     void assertEpochWhenOutOfRange() {
-        Properties props = new Properties();
-        props.put("epoch", "0");
-        assertThrows(ShardingPluginException.class, () -> TypedSPILoader.getService(KeyGenerateAlgorithm.class, "COSID_SNOWFLAKE", props).generateKey());
+        assertThrows(KeyGenerateAlgorithmInitializationException.class,
+                () -> TypedSPILoader.getService(KeyGenerateAlgorithm.class, "COSID_SNOWFLAKE", PropertiesBuilder.build(new PropertiesBuilder.Property("epoch", "0"))).generateKeys(mock(KeyGenerateContext.class), 1));
     }
 }
