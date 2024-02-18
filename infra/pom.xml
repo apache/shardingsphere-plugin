@@ -29,5 +29,6 @@
     
     <modules>
         <module>data-source-pool</module>
+        <module>url</module>
     </modules>
 </project>
