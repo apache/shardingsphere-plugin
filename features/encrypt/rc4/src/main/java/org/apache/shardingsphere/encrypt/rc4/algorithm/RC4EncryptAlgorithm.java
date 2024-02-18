@@ -18,10 +18,12 @@
 package org.apache.shardingsphere.encrypt.rc4.algorithm;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.shardingsphere.encrypt.api.context.EncryptContext;
-import org.apache.shardingsphere.encrypt.api.encrypt.standard.StandardEncryptAlgorithm;
 import org.apache.shardingsphere.encrypt.exception.algorithm.EncryptAlgorithmInitializationException;
+import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
+import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithmMetaData;
 import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
 
 import java.nio.charset.StandardCharsets;
@@ -31,7 +33,7 @@ import java.util.Properties;
  * RC4 encrypt algorithm.
  */
 @EqualsAndHashCode
-public final class RC4EncryptAlgorithm implements StandardEncryptAlgorithm {
+public final class RC4EncryptAlgorithm implements EncryptAlgorithm {
     
     private static final String RC4_KEY = "rc4-key-value";
     
@@ -40,10 +42,14 @@ public final class RC4EncryptAlgorithm implements StandardEncryptAlgorithm {
     private static final int SBOX_LENGTH = 256;
     
     private byte[] key;
+
+    @Getter
+    private EncryptAlgorithmMetaData metaData;
     
     @Override
     public void init(final Properties props) {
         key = getKey(props);
+        metaData = new EncryptAlgorithmMetaData();
     }
     
     private byte[] getKey(final Properties props) {

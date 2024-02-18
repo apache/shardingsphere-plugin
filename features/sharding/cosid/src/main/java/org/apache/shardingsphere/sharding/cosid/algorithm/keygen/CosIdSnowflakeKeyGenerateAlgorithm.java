@@ -22,17 +22,21 @@ import me.ahoo.cosid.snowflake.ClockSyncSnowflakeId;
 import me.ahoo.cosid.snowflake.MillisecondSnowflakeId;
 import me.ahoo.cosid.snowflake.SnowflakeId;
 import me.ahoo.cosid.snowflake.StringSnowflakeId;
+import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
 import org.apache.shardingsphere.infra.instance.InstanceContext;
 import org.apache.shardingsphere.infra.instance.InstanceContextAware;
-import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
+import org.apache.shardingsphere.keygen.core.algorithm.KeyGenerateAlgorithm;
+import org.apache.shardingsphere.keygen.core.context.KeyGenerateContext;
+import org.apache.shardingsphere.keygen.core.exception.algorithm.KeyGenerateAlgorithmInitializationException;
 import org.apache.shardingsphere.sharding.cosid.algorithm.CosIdAlgorithmConstants;
-import org.apache.shardingsphere.sharding.exception.ShardingPluginException;
-import org.apache.shardingsphere.sharding.spi.KeyGenerateAlgorithm;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Collection;
 import java.util.Properties;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * CosId snowflake key generate algorithm.
@@ -70,8 +74,7 @@ public final class CosIdSnowflakeKeyGenerateAlgorithm implements KeyGenerateAlgo
     
     private long getEpoch(final Properties props) {
         long result = Long.parseLong(props.getProperty(EPOCH_KEY, String.valueOf(DEFAULT_EPOCH)));
-        ShardingSpherePreconditions.checkState(result > 0L,
-                () -> new ShardingPluginException("Key generate algorithm `%s` initialization failed, reason is: %s.", getType(), "Epoch must be positive."));
+        ShardingSpherePreconditions.checkState(result > 0L, () -> new KeyGenerateAlgorithmInitializationException(getType(), "Epoch must be positive."));
         return result;
     }
     
@@ -84,7 +87,11 @@ public final class CosIdSnowflakeKeyGenerateAlgorithm implements KeyGenerateAlgo
     }
     
     @Override
-    public Comparable<?> generateKey() {
+    public Collection<Comparable<?>> generateKeys(final KeyGenerateContext keyGenerateContext, final int keyGenerateCount) {
+        return IntStream.range(0, keyGenerateCount).mapToObj(each -> generateKey()).collect(Collectors.toList());
+    }
+    
+    private Comparable<?> generateKey() {
         if (asString) {
             return getSnowflakeId().generateAsString();
         }
@@ -92,7 +99,7 @@ public final class CosIdSnowflakeKeyGenerateAlgorithm implements KeyGenerateAlgo
     }
     
     private SnowflakeId getSnowflakeId() {
-        ShardingSpherePreconditions.checkNotNull(snowflakeId, () -> new ShardingPluginException("Instance context not set yet."));
+        ShardingSpherePreconditions.checkNotNull(snowflakeId, () -> new KeyGenerateAlgorithmInitializationException(getType(), "Instance context not set yet."));
         return snowflakeId;
     }
     

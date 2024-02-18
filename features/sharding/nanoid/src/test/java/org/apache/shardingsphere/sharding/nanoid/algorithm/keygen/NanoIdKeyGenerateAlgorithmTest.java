@@ -18,16 +18,19 @@
 package org.apache.shardingsphere.sharding.nanoid.algorithm.keygen;
 
 import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
-import org.apache.shardingsphere.sharding.spi.KeyGenerateAlgorithm;
+import org.apache.shardingsphere.keygen.core.algorithm.KeyGenerateAlgorithm;
+import org.apache.shardingsphere.keygen.core.context.KeyGenerateContext;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.mock;
 
 class NanoIdKeyGenerateAlgorithmTest {
     
     @Test
     void assertGenerateKey() {
-        assertThat(TypedSPILoader.getService(KeyGenerateAlgorithm.class, "NANOID").generateKey().toString().length(), is(21));
+        assertThat(TypedSPILoader.getService(KeyGenerateAlgorithm.class, "NANOID").generateKeys(mock(KeyGenerateContext.class), 1).size(), is(1));
+        assertThat(TypedSPILoader.getService(KeyGenerateAlgorithm.class, "NANOID").generateKeys(mock(KeyGenerateContext.class), 1).iterator().next().toString().length(), is(21));
     }
 }

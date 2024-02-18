@@ -18,10 +18,12 @@
 package org.apache.shardingsphere.encrypt.sm.algorithm;
 
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.shardingsphere.encrypt.api.context.EncryptContext;
-import org.apache.shardingsphere.encrypt.api.encrypt.standard.StandardEncryptAlgorithm;
 import org.apache.shardingsphere.encrypt.exception.algorithm.EncryptAlgorithmInitializationException;
+import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
+import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithmMetaData;
 import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
 import org.bouncycastle.crypto.digests.SM3Digest;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -34,7 +36,7 @@ import java.util.Properties;
  * SM3 encrypt algorithm.
  */
 @EqualsAndHashCode
-public final class SM3EncryptAlgorithm implements StandardEncryptAlgorithm {
+public final class SM3EncryptAlgorithm implements EncryptAlgorithm {
     
     static {
         Security.addProvider(new BouncyCastleProvider());
@@ -46,9 +48,13 @@ public final class SM3EncryptAlgorithm implements StandardEncryptAlgorithm {
     
     private byte[] sm3Salt;
     
+    @Getter
+    private EncryptAlgorithmMetaData metaData;
+    
     @Override
     public void init(final Properties props) {
         sm3Salt = createSm3Salt(props);
+        metaData = new EncryptAlgorithmMetaData();
     }
     
     private byte[] createSm3Salt(final Properties props) {
