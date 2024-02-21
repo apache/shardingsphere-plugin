@@ -17,9 +17,9 @@
 
 package org.apache.shardingsphere.encrypt.sm.algorithm;
 
-import org.apache.shardingsphere.encrypt.api.context.EncryptContext;
 import org.apache.shardingsphere.encrypt.exception.algorithm.EncryptAlgorithmInitializationException;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
+import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContext;
 import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
 import org.junit.jupiter.api.Test;
 
@@ -44,25 +44,25 @@ class SM4EncryptAlgorithmTest {
     @Test
     void assertEncryptNullValue() {
         EncryptAlgorithm algorithm = TypedSPILoader.getService(EncryptAlgorithm.class, "SM4", createECBProperties());
-        assertNull(algorithm.encrypt(null, mock(EncryptContext.class)));
+        assertNull(algorithm.encrypt(null, mock(AlgorithmSQLContext.class)));
     }
 
     @Test
     void assertEncryptWithECBMode() {
         EncryptAlgorithm algorithm = TypedSPILoader.getService(EncryptAlgorithm.class, "SM4", createECBProperties());
-        assertThat(algorithm.encrypt("test", mock(EncryptContext.class)), is("028654f2ca4f575dee9e1faae85dadde"));
+        assertThat(algorithm.encrypt("test", mock(AlgorithmSQLContext.class)), is("028654f2ca4f575dee9e1faae85dadde"));
     }
 
     @Test
     void assertDecryptNullValue() {
         EncryptAlgorithm algorithm = TypedSPILoader.getService(EncryptAlgorithm.class, "SM4", createECBProperties());
-        assertNull(algorithm.decrypt(null, mock(EncryptContext.class)));
+        assertNull(algorithm.decrypt(null, mock(AlgorithmSQLContext.class)));
     }
     
     @Test
     void assertDecryptWithECBMode() {
         EncryptAlgorithm algorithm = TypedSPILoader.getService(EncryptAlgorithm.class, "SM4", createECBProperties());
-        assertThat(algorithm.decrypt("028654f2ca4f575dee9e1faae85dadde", mock(EncryptContext.class)).toString(), is("test"));
+        assertThat(algorithm.decrypt("028654f2ca4f575dee9e1faae85dadde", mock(AlgorithmSQLContext.class)).toString(), is("test"));
     }
 
     private Properties createECBProperties() {
@@ -76,13 +76,13 @@ class SM4EncryptAlgorithmTest {
     @Test
     void assertEncryptWithCBCMode() {
         EncryptAlgorithm algorithm = TypedSPILoader.getService(EncryptAlgorithm.class, "SM4", createCBCProperties());
-        assertThat(algorithm.encrypt("test", mock(EncryptContext.class)), is("dca2127b57ba8cac36a0914e0208dc11"));
+        assertThat(algorithm.encrypt("test", mock(AlgorithmSQLContext.class)), is("dca2127b57ba8cac36a0914e0208dc11"));
     }
 
     @Test
     void assertDecrypt() {
         EncryptAlgorithm algorithm = TypedSPILoader.getService(EncryptAlgorithm.class, "SM4", createCBCProperties());
-        assertThat(algorithm.decrypt("dca2127b57ba8cac36a0914e0208dc11", mock(EncryptContext.class)).toString(), is("test"));
+        assertThat(algorithm.decrypt("dca2127b57ba8cac36a0914e0208dc11", mock(AlgorithmSQLContext.class)).toString(), is("test"));
     }
 
     private Properties createCBCProperties() {

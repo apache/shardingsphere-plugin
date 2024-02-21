@@ -17,9 +17,9 @@
 
 package org.apache.shardingsphere.sharding.nanoid.algorithm.keygen;
 
+import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContext;
+import org.apache.shardingsphere.infra.algorithm.keygen.core.KeyGenerateAlgorithm;
 import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
-import org.apache.shardingsphere.keygen.core.algorithm.KeyGenerateAlgorithm;
-import org.apache.shardingsphere.keygen.core.context.KeyGenerateContext;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -30,7 +30,7 @@ class NanoIdKeyGenerateAlgorithmTest {
     
     @Test
     void assertGenerateKey() {
-        assertThat(TypedSPILoader.getService(KeyGenerateAlgorithm.class, "NANOID").generateKeys(mock(KeyGenerateContext.class), 1).size(), is(1));
-        assertThat(TypedSPILoader.getService(KeyGenerateAlgorithm.class, "NANOID").generateKeys(mock(KeyGenerateContext.class), 1).iterator().next().toString().length(), is(21));
+        assertThat(TypedSPILoader.getService(KeyGenerateAlgorithm.class, "NANOID").generateKeys(mock(AlgorithmSQLContext.class), 1).size(), is(1));
+        assertThat(TypedSPILoader.getService(KeyGenerateAlgorithm.class, "NANOID").generateKeys(mock(AlgorithmSQLContext.class), 1).iterator().next().toString().length(), is(21));
     }
 }

@@ -20,10 +20,10 @@ package org.apache.shardingsphere.encrypt.rc4.algorithm;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.shardingsphere.encrypt.api.context.EncryptContext;
 import org.apache.shardingsphere.encrypt.exception.algorithm.EncryptAlgorithmInitializationException;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithmMetaData;
+import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContext;
 import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
 
 import java.nio.charset.StandardCharsets;
@@ -60,12 +60,12 @@ public final class RC4EncryptAlgorithm implements EncryptAlgorithm {
     }
     
     @Override
-    public String encrypt(final Object plainValue, final EncryptContext encryptContext) {
+    public String encrypt(final Object plainValue, final AlgorithmSQLContext encryptContext) {
         return null == plainValue ? null : Base64.encodeBase64String(crypt(String.valueOf(plainValue).getBytes(StandardCharsets.UTF_8)));
     }
     
     @Override
-    public Object decrypt(final Object cipherValue, final EncryptContext encryptContext) {
+    public Object decrypt(final Object cipherValue, final AlgorithmSQLContext encryptContext) {
         return null == cipherValue ? null : new String(crypt(Base64.decodeBase64(cipherValue.toString())), StandardCharsets.UTF_8);
     }
     
