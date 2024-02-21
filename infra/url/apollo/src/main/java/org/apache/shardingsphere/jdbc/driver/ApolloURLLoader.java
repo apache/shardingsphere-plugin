@@ -19,7 +19,7 @@ package org.apache.shardingsphere.jdbc.driver;
 
 import com.ctrip.framework.apollo.ConfigService;
 import com.ctrip.framework.apollo.core.enums.ConfigFileFormat;
-import org.apache.shardingsphere.infra.url.ShardingSphereURLLoader;
+import org.apache.shardingsphere.infra.url.spi.ShardingSphereURLLoader;
 
 import java.util.Properties;
 

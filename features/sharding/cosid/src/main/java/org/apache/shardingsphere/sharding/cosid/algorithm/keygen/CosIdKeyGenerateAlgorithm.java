@@ -20,8 +20,8 @@ package org.apache.shardingsphere.sharding.cosid.algorithm.keygen;
 import me.ahoo.cosid.CosId;
 import me.ahoo.cosid.provider.IdGeneratorProvider;
 import me.ahoo.cosid.provider.LazyIdGenerator;
-import org.apache.shardingsphere.keygen.core.algorithm.KeyGenerateAlgorithm;
-import org.apache.shardingsphere.keygen.core.context.KeyGenerateContext;
+import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContext;
+import org.apache.shardingsphere.infra.algorithm.keygen.core.KeyGenerateAlgorithm;
 import org.apache.shardingsphere.sharding.cosid.algorithm.CosIdAlgorithmConstants;
 
 import java.util.Collection;
@@ -48,7 +48,7 @@ public final class CosIdKeyGenerateAlgorithm implements KeyGenerateAlgorithm {
     }
     
     @Override
-    public Collection<Comparable<?>> generateKeys(final KeyGenerateContext keyGenerateContext, final int keyGenerateCount) {
+    public Collection<Comparable<?>> generateKeys(final AlgorithmSQLContext algorithmSQLContext, final int keyGenerateCount) {
         return IntStream.range(0, keyGenerateCount).mapToObj(each -> generateKey()).collect(Collectors.toList());
     }
     

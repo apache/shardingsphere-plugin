@@ -17,8 +17,8 @@
 
 package org.apache.shardingsphere.encrypt.like.algorithm;
 
-import org.apache.shardingsphere.encrypt.api.context.EncryptContext;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
+import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContext;
 import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,22 +51,22 @@ class CharDigestLikeEncryptAlgorithmTest {
     @Test
     void assertEncrypt() {
         assertThat(englishLikeEncryptAlgorithm.encrypt("1234567890%abcdefghijklmnopqrstuvwxyz%ABCDEFGHIJKLMNOPQRSTUVWXYZ",
-                mock(EncryptContext.class)), is("0145458981%`adedehihilmlmpqpqtutuxyxy%@ADEDEHIHILMLMPQPQTUTUXYXY"));
-        assertThat(englishLikeEncryptAlgorithm.encrypt("_1234__5678__", mock(EncryptContext.class)), is("_0145__4589__"));
+                mock(AlgorithmSQLContext.class)), is("0145458981%`adedehihilmlmpqpqtutuxyxy%@ADEDEHIHILMLMPQPQTUTUXYXY"));
+        assertThat(englishLikeEncryptAlgorithm.encrypt("_1234__5678__", mock(AlgorithmSQLContext.class)), is("_0145__4589__"));
     }
     
     @Test
     void assertEncryptWithChineseChar() {
-        assertThat(chineseLikeEncryptAlgorithm.encrypt("中国", mock(EncryptContext.class)), is("婝估"));
+        assertThat(chineseLikeEncryptAlgorithm.encrypt("中国", mock(AlgorithmSQLContext.class)), is("婝估"));
     }
     
     @Test
     void assertEncryptWithKoreanChar() {
-        assertThat(koreanLikeEncryptAlgorithm.encrypt("한국", mock(EncryptContext.class)), is("각가"));
+        assertThat(koreanLikeEncryptAlgorithm.encrypt("한국", mock(AlgorithmSQLContext.class)), is("각가"));
     }
     
     @Test
     void assertEncryptWithNullPlaintext() {
-        assertNull(englishLikeEncryptAlgorithm.encrypt(null, mock(EncryptContext.class)));
+        assertNull(englishLikeEncryptAlgorithm.encrypt(null, mock(AlgorithmSQLContext.class)));
     }
 }

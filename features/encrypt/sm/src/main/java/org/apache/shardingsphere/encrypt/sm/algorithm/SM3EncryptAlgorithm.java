@@ -20,10 +20,10 @@ package org.apache.shardingsphere.encrypt.sm.algorithm;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.apache.commons.codec.binary.Hex;
-import org.apache.shardingsphere.encrypt.api.context.EncryptContext;
 import org.apache.shardingsphere.encrypt.exception.algorithm.EncryptAlgorithmInitializationException;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithmMetaData;
+import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContext;
 import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
 import org.bouncycastle.crypto.digests.SM3Digest;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -65,12 +65,12 @@ public final class SM3EncryptAlgorithm implements EncryptAlgorithm {
     }
     
     @Override
-    public String encrypt(final Object plainValue, final EncryptContext encryptContext) {
+    public String encrypt(final Object plainValue, final AlgorithmSQLContext algorithmSQLContext) {
         return null == plainValue ? null : Hex.encodeHexString(digest(String.valueOf(plainValue).getBytes(StandardCharsets.UTF_8), sm3Salt));
     }
     
     @Override
-    public Object decrypt(final Object cipherValue, final EncryptContext encryptContext) {
+    public Object decrypt(final Object cipherValue, final AlgorithmSQLContext algorithmSQLContext) {
         return cipherValue;
     }
     

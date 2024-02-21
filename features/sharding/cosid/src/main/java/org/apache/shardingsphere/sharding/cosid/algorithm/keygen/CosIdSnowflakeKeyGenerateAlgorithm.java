@@ -22,12 +22,12 @@ import me.ahoo.cosid.snowflake.ClockSyncSnowflakeId;
 import me.ahoo.cosid.snowflake.MillisecondSnowflakeId;
 import me.ahoo.cosid.snowflake.SnowflakeId;
 import me.ahoo.cosid.snowflake.StringSnowflakeId;
+import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContext;
+import org.apache.shardingsphere.infra.algorithm.keygen.core.KeyGenerateAlgorithm;
+import org.apache.shardingsphere.infra.algorithm.keygen.core.exception.KeyGenerateAlgorithmInitializationException;
 import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
 import org.apache.shardingsphere.infra.instance.InstanceContext;
 import org.apache.shardingsphere.infra.instance.InstanceContextAware;
-import org.apache.shardingsphere.keygen.core.algorithm.KeyGenerateAlgorithm;
-import org.apache.shardingsphere.keygen.core.context.KeyGenerateContext;
-import org.apache.shardingsphere.keygen.core.exception.algorithm.KeyGenerateAlgorithmInitializationException;
 import org.apache.shardingsphere.sharding.cosid.algorithm.CosIdAlgorithmConstants;
 
 import java.time.Instant;
@@ -87,7 +87,7 @@ public final class CosIdSnowflakeKeyGenerateAlgorithm implements KeyGenerateAlgo
     }
     
     @Override
-    public Collection<Comparable<?>> generateKeys(final KeyGenerateContext keyGenerateContext, final int keyGenerateCount) {
+    public Collection<Comparable<?>> generateKeys(final AlgorithmSQLContext algorithmSQLContext, final int keyGenerateCount) {
         return IntStream.range(0, keyGenerateCount).mapToObj(each -> generateKey()).collect(Collectors.toList());
     }
     

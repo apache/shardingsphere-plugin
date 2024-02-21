@@ -17,9 +17,9 @@
 
 package org.apache.shardingsphere.encrypt.rc4.algorithm;
 
-import org.apache.shardingsphere.encrypt.api.context.EncryptContext;
 import org.apache.shardingsphere.encrypt.exception.algorithm.EncryptAlgorithmInitializationException;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
+import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContext;
 import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,12 +47,12 @@ class RC4EncryptAlgorithmTest {
     
     @Test
     void assertEncode() {
-        assertThat(encryptAlgorithm.encrypt("test", mock(EncryptContext.class)), is("4Tn7lQ=="));
+        assertThat(encryptAlgorithm.encrypt("test", mock(AlgorithmSQLContext.class)), is("4Tn7lQ=="));
     }
     
     @Test
     void assertEncryptNullValue() {
-        assertNull(encryptAlgorithm.encrypt(null, mock(EncryptContext.class)));
+        assertNull(encryptAlgorithm.encrypt(null, mock(AlgorithmSQLContext.class)));
     }
     
     @Test
@@ -71,11 +71,11 @@ class RC4EncryptAlgorithmTest {
     
     @Test
     void assertDecode() {
-        assertThat(encryptAlgorithm.decrypt("4Tn7lQ==", mock(EncryptContext.class)).toString(), is("test"));
+        assertThat(encryptAlgorithm.decrypt("4Tn7lQ==", mock(AlgorithmSQLContext.class)).toString(), is("test"));
     }
     
     @Test
     void assertDecryptNullValue() {
-        assertNull(encryptAlgorithm.decrypt(null, mock(EncryptContext.class)));
+        assertNull(encryptAlgorithm.decrypt(null, mock(AlgorithmSQLContext.class)));
     }
 }

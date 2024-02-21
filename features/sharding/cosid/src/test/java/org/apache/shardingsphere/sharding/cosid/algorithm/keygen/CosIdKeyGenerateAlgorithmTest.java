@@ -26,9 +26,9 @@ import me.ahoo.cosid.provider.NotFoundIdGeneratorException;
 import me.ahoo.cosid.segment.DefaultSegmentId;
 import me.ahoo.cosid.segment.IdSegmentDistributor;
 import me.ahoo.cosid.snowflake.MillisecondSnowflakeId;
+import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContext;
+import org.apache.shardingsphere.infra.algorithm.keygen.core.KeyGenerateAlgorithm;
 import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
-import org.apache.shardingsphere.keygen.core.algorithm.KeyGenerateAlgorithm;
-import org.apache.shardingsphere.keygen.core.context.KeyGenerateContext;
 import org.apache.shardingsphere.sharding.cosid.algorithm.CosIdAlgorithmConstants;
 import org.junit.jupiter.api.Test;
 
@@ -52,8 +52,8 @@ class CosIdKeyGenerateAlgorithmTest {
         Properties props = new Properties();
         props.put(CosIdAlgorithmConstants.ID_NAME_KEY, idName);
         KeyGenerateAlgorithm algorithm = TypedSPILoader.getService(KeyGenerateAlgorithm.class, "COSID", props);
-        assertThat(algorithm.generateKeys(mock(KeyGenerateContext.class), 1).iterator().next(), is(1L));
-        assertThat(algorithm.generateKeys(mock(KeyGenerateContext.class), 1).iterator().next(), is(2L));
+        assertThat(algorithm.generateKeys(mock(AlgorithmSQLContext.class), 1).iterator().next(), is(1L));
+        assertThat(algorithm.generateKeys(mock(AlgorithmSQLContext.class), 1).iterator().next(), is(2L));
     }
     
     @Test
@@ -61,14 +61,14 @@ class CosIdKeyGenerateAlgorithmTest {
         DefaultSegmentId defaultSegmentId = new DefaultSegmentId(new IdSegmentDistributor.Mock());
         DefaultIdGeneratorProvider.INSTANCE.setShare(defaultSegmentId);
         KeyGenerateAlgorithm algorithm = TypedSPILoader.getService(KeyGenerateAlgorithm.class, "COSID");
-        assertThat(algorithm.generateKeys(mock(KeyGenerateContext.class), 1).iterator().next(), is(1L));
-        assertThat(algorithm.generateKeys(mock(KeyGenerateContext.class), 1).iterator().next(), is(2L));
+        assertThat(algorithm.generateKeys(mock(AlgorithmSQLContext.class), 1).iterator().next(), is(1L));
+        assertThat(algorithm.generateKeys(mock(AlgorithmSQLContext.class), 1).iterator().next(), is(2L));
     }
     
     @Test
     void assertGenerateKeyWhenIdProviderIsEmpty() {
         DefaultIdGeneratorProvider.INSTANCE.clear();
-        assertThrows(NotFoundIdGeneratorException.class, () -> TypedSPILoader.getService(KeyGenerateAlgorithm.class, "COSID").generateKeys(mock(KeyGenerateContext.class), 1).iterator().next());
+        assertThrows(NotFoundIdGeneratorException.class, () -> TypedSPILoader.getService(KeyGenerateAlgorithm.class, "COSID").generateKeys(mock(AlgorithmSQLContext.class), 1).iterator().next());
     }
     
     @Test
@@ -81,7 +81,7 @@ class CosIdKeyGenerateAlgorithmTest {
         props.put(CosIdAlgorithmConstants.ID_NAME_KEY, idName);
         props.put("as-string", Boolean.TRUE.toString());
         KeyGenerateAlgorithm algorithm = TypedSPILoader.getService(KeyGenerateAlgorithm.class, "COSID", props);
-        Comparable<?> actual = algorithm.generateKeys(mock(KeyGenerateContext.class), 1).iterator().next();
+        Comparable<?> actual = algorithm.generateKeys(mock(AlgorithmSQLContext.class), 1).iterator().next();
         assertThat(actual, instanceOf(String.class));
         assertThat(actual.toString(), startsWith(prefix));
         assertThat(actual.toString().length(), lessThanOrEqualTo(16));

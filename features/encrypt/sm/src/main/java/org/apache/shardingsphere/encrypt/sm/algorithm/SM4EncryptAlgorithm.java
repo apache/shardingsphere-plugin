@@ -22,10 +22,10 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
-import org.apache.shardingsphere.encrypt.api.context.EncryptContext;
 import org.apache.shardingsphere.encrypt.exception.algorithm.EncryptAlgorithmInitializationException;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithmMetaData;
+import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContext;
 import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
@@ -119,7 +119,7 @@ public final class SM4EncryptAlgorithm implements EncryptAlgorithm {
     }
     
     @Override
-    public Object encrypt(final Object plainValue, final EncryptContext encryptContext) {
+    public Object encrypt(final Object plainValue, final AlgorithmSQLContext encryptContext) {
         return null == plainValue ? null : Hex.encodeHexString(encrypt(String.valueOf(plainValue).getBytes(StandardCharsets.UTF_8)));
     }
     
@@ -128,7 +128,7 @@ public final class SM4EncryptAlgorithm implements EncryptAlgorithm {
     }
     
     @Override
-    public Object decrypt(final Object cipherValue, final EncryptContext encryptContext) {
+    public Object decrypt(final Object cipherValue, final AlgorithmSQLContext encryptContext) {
         return null == cipherValue ? null : new String(decrypt(fromHexString(String.valueOf(cipherValue))), StandardCharsets.UTF_8);
     }
     
