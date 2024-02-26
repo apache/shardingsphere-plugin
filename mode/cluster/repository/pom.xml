@@ -29,5 +29,6 @@
     
     <modules>
         <module>nacos</module>
+        <module>consul</module>
     </modules>
 </project>

@@ -383,3 +383,36 @@ Maven 依赖:
     <version>${RELEASE.VERSION}</version>
 </dependency>
 ```
+
+* Consul 持久化
+
+受 `com.ecwid.consul:consul-api:1.4.5` 的 Maven 模块的限制，使用者无法通过 gRPC 端口来连接到  Consul Agent。
+
+`Consul` 实现的 `serverLists` 属性受设计使然，仅可通过 HTTP 端点连接到单个 Consul Agent。
+`serverLists` 使用了宽松的 URL 匹配原则。
+1. 当 `serverLists` 为空时，将解析到 `http://127.0.0.1:8500` 的 Consul Agent 实例。
+2. 当 `serverLists` 为 `hostName` 时，将解析到 `http://hostName:8500` 的 Consul Agent 实例。
+3. 当 `serverLists` 为 `hostName:port` 时，将解析到 `http://hostName:port` 的 Consul Agent 实例。
+4. 当 `serverLists` 为 `http://hostName:port` 时，将解析到 `http://hostName:port` 的 Consul Agent 实例。
+5. 当 `serverLists` 为 `https://hostName:port` 时，将解析到 `https://hostName:port` 的 Consul Agent 实例。
+
+类型：Consul
+
+适用模式：Cluster
+
+可配置属性：
+
+| *名称*                    | *数据类型* | *说明*      | *默认值* |
+|-------------------------|--------|-----------|-------|
+| timeToLiveSeconds       | String | 临时实例失效的秒数 | 30s   |
+| blockQueryTimeToSeconds | long   | 查询请求超时秒数  | 60    |
+
+Maven 依赖:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-mode-cluster-repository-consul</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
