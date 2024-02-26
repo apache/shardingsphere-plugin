@@ -13,6 +13,8 @@
             * [Sharding Algorithm](#sharding-algorithm)
     * [Infra Plugin](#infra-plugin)
         * [Connection Pool Plugin](#connection-pool-plugin)
+    * [Kernel Plugin](#kernel-plugin)
+        * [SQL Translator Plugin](#sql-translator-plugin)
     * [JDBC Adaptor Plugin](#jdbc-adaptor-plugin)
         * [JDBC Driver Config Plugin](#jdbc-driver-config-plugin)
     * [Mode Plugin](#mode-plugin)
@@ -28,7 +30,7 @@ Developers are welcome to contribute to the implementation of plugins and build 
 
 # Instruction
 
-These plugins can be found in [ShardingSphere plugin](https://github.com/apache/shardingsphere-plugin) repository. Plugins in ShardingSphere plugin repository would remain the same release plan with ShardingSphere, they can be retrieved at https://central.sonatype.com/, and install into ShardingSphere.
+These plugins can be found in [ShardingSphere plugin](https://github.com/apache/shardingsphere-plugin) repository. Plugins in ShardingSphere plugin repository would remain the same release plan with ShardingSphere.
 When using ShardingSphere-JDBC, users only need to add maven dependencies to the project to complete the plugin installation. When using ShardingSphere-Proxy, they need to download the plugin jar package and the jar packages that the plugin may depend on, and then copy them to ShardingSphere-Proxy `ext-lib` directory.
 
 When developers contribute new plugins, they need to refer to [Contributor Guide](https://shardingsphere.apache.org/community/en/involved/contribute/contributor/) and first execute `./mvnw clean install -DskipITs -DskipTests -Prelease` to package ShardingSphere basic SPI and test components, and then create a new module for plugin development.
@@ -322,10 +324,34 @@ dataSources:
     password:
 ```
 
+Maven dependency:
+
 ```xml
 <dependency>
     <groupId>org.apache.shardingsphere</groupId>
     <artifactId>shardingsphere-plugin-infra-data-source-pool-dbcp</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
+## Kernel Plugin
+
+### SQL Translator Plugin
+
+* JooQ SQL translator
+
+Type: JOOQ
+
+Attributes:
+
+None
+
+Maven dependency:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-kernel-sql-translator-jooq</artifactId>
     <version>${RELEASE.VERSION}</version>
 </dependency>
 ```
