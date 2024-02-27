@@ -9,9 +9,10 @@
             * [Like Encrypt Algorithm](#like-encrypt-algorithm)
             * [Standard Encrypt Algorithm](#standard-encrypt-algorithm)
         * [Sharding Feature Plugin](#sharding-feature-plugin)
-            * [Distributed Key Generator](#distributed-key-generator)
             * [Sharding Algorithm](#sharding-algorithm)
     * [Infra Plugin](#infra-plugin)
+        * [Infra Algorithm Plugin](#infra-algorithm-plugin)
+            * [Distributed Key Generator](#distributed-key-generator)
         * [Connection Pool Plugin](#connection-pool-plugin)
     * [Kernel Plugin](#kernel-plugin)
         * [SQL Translator Plugin](#sql-translator-plugin)
@@ -134,66 +135,6 @@ Maven dependency:
 
 ### Sharding Feature Plugin
 
-#### Distributed Key Generator
-
-* Nano ID
-
-Type:NANOID
-
-Configurable Property:none
-
-Maven dependency:
-
-```xml
-<dependency>
-    <groupId>org.apache.shardingsphere</groupId>
-    <artifactId>shardingsphere-plugin-features-sharding-nanoid</artifactId>
-    <version>${RELEASE.VERSION}</version>
-</dependency>
-```
-
-* CosId
-
-Type: COSID
-
-Attributes：
-
-| *Name*    | *DataType* | *Description*                                                                                                                                                                      | *Default Value* |
-|-----------|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
-| id-name   | String     | ID generator name                                                                                                                                                                  | `__share__`     |
-| as-string | bool       | Whether to generate a string type ID: Convert `long` type ID to Base-62 `String` type (`Long.MAX_VALUE` maximum string length is 11 digits), and ensure the ordering of string IDs | `false`         |
-
-Maven dependency:
-
-```xml
-<dependency>
-    <groupId>org.apache.shardingsphere</groupId>
-    <artifactId>shardingsphere-plugin-features-sharding-cosid</artifactId>
-    <version>${RELEASE.VERSION}</version>
-</dependency>
-```
-
-* CosId-Snowflake
-
-Type: COSID_SNOWFLAKE
-
-Attributes：
-
-| *Name*    | *DataType* | *Description*                                                                                                                                                                      | *Default Value* |
-|-----------|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
-| epoch     | String     | EPOCH of Snowflake ID Algorithm                                                                                                                                                    | `1477929600000` |
-| as-string | bool       | Whether to generate a string type ID: Convert `long` type ID to Base-62 `String` type (`Long.MAX_VALUE` maximum string length is 11 digits), and ensure the ordering of string IDs | `false`         |
-
-Maven dependency:
-
-```xml
-<dependency>
-    <groupId>org.apache.shardingsphere</groupId>
-    <artifactId>shardingsphere-plugin-features-sharding-cosid</artifactId>
-    <version>${RELEASE.VERSION}</version>
-</dependency>
-```
-
 #### Sharding Algorithm
 
 * Fixed interval sharding algorithm provided by CosId
@@ -281,6 +222,68 @@ Maven dependency:
 ```
 
 ## Infra Plugin
+
+### Infra Algorithm Plugin
+
+#### Distributed Key Generator
+
+* Nano ID
+
+Type:NANOID
+
+Configurable Property:none
+
+Maven dependency:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-infra-algorithm-key-generator-nanoid</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
+* CosId
+
+Type: COSID
+
+Attributes：
+
+| *Name*    | *DataType* | *Description*                                                                                                                                                                      | *Default Value* |
+|-----------|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
+| id-name   | String     | ID generator name                                                                                                                                                                  | `__share__`     |
+| as-string | bool       | Whether to generate a string type ID: Convert `long` type ID to Base-62 `String` type (`Long.MAX_VALUE` maximum string length is 11 digits), and ensure the ordering of string IDs | `false`         |
+
+Maven dependency:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-infra-algorithm-key-generator-cosid</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
+* CosId-Snowflake
+
+Type: COSID_SNOWFLAKE
+
+Attributes：
+
+| *Name*    | *DataType* | *Description*                                                                                                                                                                      | *Default Value* |
+|-----------|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
+| epoch     | String     | EPOCH of Snowflake ID Algorithm                                                                                                                                                    | `1477929600000` |
+| as-string | bool       | Whether to generate a string type ID: Convert `long` type ID to Base-62 `String` type (`Long.MAX_VALUE` maximum string length is 11 digits), and ensure the ordering of string IDs | `false`         |
+
+Maven dependency:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-infra-algorithm-key-generator-cosid</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
 
 ### Connection Pool Plugin
 

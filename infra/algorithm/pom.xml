@@ -20,14 +20,14 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.apache.shardingsphere</groupId>
-        <artifactId>shardingsphere-plugin-features</artifactId>
+        <artifactId>shardingsphere-plugin-infra</artifactId>
         <version>5.4.2-SNAPSHOT</version>
     </parent>
-    <artifactId>shardingsphere-plugin-features-sharding</artifactId>
+    <artifactId>shardingsphere-plugin-infra-algorithm</artifactId>
     <packaging>pom</packaging>
     <name>${project.artifactId}</name>
     
     <modules>
-        <module>cosid</module>
+        <module>key-generator</module>
     </modules>
 </project>

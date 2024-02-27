@@ -23,8 +23,9 @@ import me.ahoo.cosid.snowflake.MillisecondSnowflakeId;
 import me.ahoo.cosid.snowflake.MillisecondSnowflakeIdStateParser;
 import me.ahoo.cosid.snowflake.SnowflakeIdStateParser;
 import org.apache.shardingsphere.sharding.cosid.algorithm.CosIdAlgorithmConstants;
-import org.apache.shardingsphere.sharding.cosid.algorithm.keygen.CosIdSnowflakeKeyGenerateAlgorithm;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Properties;
 
@@ -32,6 +33,8 @@ import java.util.Properties;
  * Snowflake interval sharding algorithm with CosId.
  */
 public final class CosIdSnowflakeIntervalShardingAlgorithm extends AbstractCosIdIntervalShardingAlgorithm<Comparable<?>> {
+    
+    private static final long DEFAULT_EPOCH = LocalDateTime.of(2016, 11, 1, 0, 0, 0).toInstant(ZoneId.systemDefault().getRules().getOffset(Instant.now())).toEpochMilli();
     
     private static final String EPOCH_KEY = "epoch";
     
@@ -43,7 +46,7 @@ public final class CosIdSnowflakeIntervalShardingAlgorithm extends AbstractCosId
     }
     
     private SnowflakeIdStateParser createSnowflakeIdStateParser(final Properties props) {
-        long epoch = Long.parseLong(props.getProperty(EPOCH_KEY, String.valueOf(CosIdSnowflakeKeyGenerateAlgorithm.DEFAULT_EPOCH)));
+        long epoch = Long.parseLong(props.getProperty(EPOCH_KEY, String.valueOf(DEFAULT_EPOCH)));
         ZoneId zoneId = props.containsKey(ZONE_ID_KEY) ? ZoneId.of(props.getProperty(ZONE_ID_KEY)) : ZoneId.systemDefault();
         return new MillisecondSnowflakeIdStateParser(
                 epoch, MillisecondSnowflakeId.DEFAULT_TIMESTAMP_BIT, MillisecondSnowflakeId.DEFAULT_MACHINE_BIT, MillisecondSnowflakeId.DEFAULT_SEQUENCE_BIT, zoneId);
