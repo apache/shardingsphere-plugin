@@ -9,9 +9,10 @@
             * [模糊加密算法插件](#模糊加密算法插件)
             * [标准加密算法插件](#标准加密算法插件)
         * [分片功能插件](#分片功能插件)
-            * [分布式主键生成插件](#分布式主键生成插件)
             * [分片算法插件](#分片算法插件)
     * [基础设施插件](#基础设施插件)
+        * [基础算法插件](#基础算法插件)
+            * [分布式主键生成插件](#分布式主键生成插件)
         * [连接池插件](#连接池插件)
     * [内核插件](#内核插件)
         * [SQL 翻译器插件](#sql-翻译器插件)
@@ -134,66 +135,6 @@ Maven 依赖:
 
 ### 分片功能插件
 
-#### 分布式主键生成插件
-
-* NanoID
-
-类型：NANOID
-
-可配置属性： 无
-
-Maven 依赖:
-
-```xml
-<dependency>
-    <groupId>org.apache.shardingsphere</groupId>
-    <artifactId>shardingsphere-plugin-features-sharding-nanoid</artifactId>
-    <version>${RELEASE.VERSION}</version>
-</dependency>
-```
-
-* CosId
-
-类型: COSID
-
-可配置属性：
-
-| *属性名称*    | *数据类型* | *说明*                                                                                         | *默认值*       |
-|-----------|--------|----------------------------------------------------------------------------------------------|-------------|
-| id-name   | String | ID 生成器名称                                                                                     | `__share__` |
-| as-string | bool   | 是否生成字符串类型ID: 将 `long` 类型 ID 转换成 62 进制 `String` 类型（`Long.MAX_VALUE` 最大字符串长度11位），并保证字符串 ID 有序性 | `false`     |
-
-Maven 依赖:
-
-```xml
-<dependency>
-    <groupId>org.apache.shardingsphere</groupId>
-    <artifactId>shardingsphere-plugin-features-sharding-cosid</artifactId>
-    <version>${RELEASE.VERSION}</version>
-</dependency>
-```
-
-* CosId-Snowflake
-
-类型: COSID_SNOWFLAKE
-
-可配置属性：
-
-| *属性名称*    | *数据类型* | *说明*                                                                                         | *默认值*           |
-|-----------|--------|----------------------------------------------------------------------------------------------|-----------------|
-| epoch     | String | 雪花 ID 算法的 EPOCH                                                                              | `1477929600000` |
-| as-string | bool   | 是否生成字符串类型ID: 将 `long` 类型 ID 转换成 62 进制 `String` 类型（`Long.MAX_VALUE` 最大字符串长度11位），并保证字符串 ID 有序性 | `false`         |
-
-Maven 依赖:
-
-```xml
-<dependency>
-    <groupId>org.apache.shardingsphere</groupId>
-    <artifactId>shardingsphere-plugin-features-sharding-cosid</artifactId>
-    <version>${RELEASE.VERSION}</version>
-</dependency>
-```
-
 #### 分片算法插件
 
 * 基于 CosId 的固定时间范围的分片算法
@@ -281,6 +222,68 @@ Maven 依赖:
 ```
 
 ## 基础设施插件
+
+### 基础算法插件
+
+#### 分布式主键生成插件
+
+* NanoID
+
+类型：NANOID
+
+可配置属性： 无
+
+Maven 依赖:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-infra-algorithm-key-generator-nanoid</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
+* CosId
+
+类型: COSID
+
+可配置属性：
+
+| *属性名称*    | *数据类型* | *说明*                                                                                         | *默认值*       |
+|-----------|--------|----------------------------------------------------------------------------------------------|-------------|
+| id-name   | String | ID 生成器名称                                                                                     | `__share__` |
+| as-string | bool   | 是否生成字符串类型ID: 将 `long` 类型 ID 转换成 62 进制 `String` 类型（`Long.MAX_VALUE` 最大字符串长度11位），并保证字符串 ID 有序性 | `false`     |
+
+Maven 依赖:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-infra-algorithm-key-generator-cosid</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
+* CosId-Snowflake
+
+类型: COSID_SNOWFLAKE
+
+可配置属性：
+
+| *属性名称*    | *数据类型* | *说明*                                                                                         | *默认值*           |
+|-----------|--------|----------------------------------------------------------------------------------------------|-----------------|
+| epoch     | String | 雪花 ID 算法的 EPOCH                                                                              | `1477929600000` |
+| as-string | bool   | 是否生成字符串类型ID: 将 `long` 类型 ID 转换成 62 进制 `String` 类型（`Long.MAX_VALUE` 最大字符串长度11位），并保证字符串 ID 有序性 | `false`         |
+
+Maven 依赖:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-infra-algorithm-key-generator-cosid</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
 
 ### 连接池插件
 

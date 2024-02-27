@@ -28,6 +28,7 @@
     <name>${project.artifactId}</name>
     
     <modules>
+        <module>algorithm</module>
         <module>data-source-pool</module>
         <module>url</module>
     </modules>
