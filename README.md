@@ -14,6 +14,7 @@
         * [Infra Algorithm Plugin](#infra-algorithm-plugin)
             * [Distributed Key Generator](#distributed-key-generator)
         * [Connection Pool Plugin](#connection-pool-plugin)
+        * [URL Loader Plugin](#url-loader-plugin)
     * [Kernel Plugin](#kernel-plugin)
         * [SQL Translator Plugin](#sql-translator-plugin)
     * [JDBC Adaptor Plugin](#jdbc-adaptor-plugin)
@@ -333,6 +334,25 @@ Maven dependency:
 <dependency>
     <groupId>org.apache.shardingsphere</groupId>
     <artifactId>shardingsphere-plugin-infra-data-source-pool-dbcp</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
+### URL Loader Plugin
+
+Shardingsphere-JDBC supports user-defined URL loader plugin, allowing users to load YAML configuration during the initial startup phase through custom methods. For example, YAML configuration information can be stored using relative paths, absolute paths, Apollo. 
+
+* Apollo URL Loader
+
+Type: Apollo
+Configurable Property: none
+
+Maven dependency:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-infra-url-apollo</artifactId>
     <version>${RELEASE.VERSION}</version>
 </dependency>
 ```
