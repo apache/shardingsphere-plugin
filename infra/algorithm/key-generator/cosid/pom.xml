@@ -46,11 +46,5 @@
             <artifactId>cosid-core</artifactId>
             <version>${cosid.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.shardingsphere</groupId>
-            <artifactId>shardingsphere-test-util</artifactId>
-            <version>${shardingsphere.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 </project>
