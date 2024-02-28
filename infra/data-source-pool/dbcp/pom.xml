@@ -38,19 +38,6 @@
             <artifactId>commons-dbcp2</artifactId>
             <version>${commons-dbcp2.version}</version>
         </dependency>
-        
-        <dependency>
-            <groupId>org.apache.shardingsphere</groupId>
-            <artifactId>shardingsphere-test-fixture-database</artifactId>
-            <version>${shardingsphere.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.shardingsphere</groupId>
-            <artifactId>shardingsphere-test-util</artifactId>
-            <version>${shardingsphere.version}</version>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
     
     <build>

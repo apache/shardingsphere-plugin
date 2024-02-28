@@ -20,8 +20,6 @@ package org.apache.shardingsphere.jdbc.driver;
 import com.ctrip.framework.apollo.ConfigFile;
 import com.ctrip.framework.apollo.ConfigService;
 import com.ctrip.framework.apollo.core.enums.ConfigFileFormat;
-import org.apache.shardingsphere.test.util.PropertiesBuilder;
-import org.apache.shardingsphere.test.util.PropertiesBuilder.Property;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
@@ -46,7 +44,9 @@ class ApolloURLLoaderTest {
             String expectedConfig = "Mocked yaml config" + System.lineSeparator();
             when(config.getContent()).thenReturn(expectedConfig);
             assertThat(loader.load("TEST1.test_namespace", new Properties()), is(expectedConfig));
-            assertThat(loader.load("TEST1.test_namespace", PropertiesBuilder.build(new Property("configFileFormat", "yaml"))), is(expectedConfig));
+            Properties props = new Properties();
+            props.put("configFileFormat", "yaml");
+            assertThat(loader.load("TEST1.test_namespace", props), is(expectedConfig));
         }
     }
 }
