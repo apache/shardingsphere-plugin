@@ -14,6 +14,7 @@
         * [基础算法插件](#基础算法插件)
             * [分布式主键生成插件](#分布式主键生成插件)
         * [连接池插件](#连接池插件)
+        * [URL 配置加载插件](#url-配置加载插件)
     * [内核插件](#内核插件)
         * [SQL 翻译器插件](#sql-翻译器插件)
     * [JDBC 接入端插件](#jdbc-接入端插件)
@@ -337,8 +338,32 @@ Maven 依赖:
 </dependency>
 ```
 
+### URL 配置加载插件
+
+ShardingSphere-JDBC 支持用户自定义 URL 扩展，允许用户通过自定义方法在初始启动阶段加载 YAML 配置信息。例如：YAML 配置信息可以使用相对路径、绝对路径、Apollo 或其他方式存储。
+
+* Apollo URL Loader
+
+类型: Apollo
+
+Maven 依赖:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-infra-url-apollo</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
+使用 Apollo 存储 JDBC YAML 配置，示例如下：
+```yaml
+# 在 ShardingSphere-JDBC 驱动 URL 中声明使用 Apollo 方式存储配置，并指定 Apollo 中存储 YAML 的 Namespace 为 `test_namespace`
+jdbc:shardingsphere:apollo:test_namespace
+```
+
 ## 内核插件
-    
+
 ### SQL 翻译器插件
 
 * JooQ SQL 翻译器
