@@ -346,8 +346,6 @@ ShardingSphere-JDBC 支持用户自定义 URL 扩展，允许用户通过自定�
 
 类型: Apollo
 
-可选配置: 无
-
 Maven 依赖:
 
 ```xml
@@ -356,6 +354,12 @@ Maven 依赖:
     <artifactId>shardingsphere-plugin-infra-url-apollo</artifactId>
     <version>${RELEASE.VERSION}</version>
 </dependency>
+```
+
+使用 Apollo 存储 JDBC YAML 配置，示例如下：
+```yaml
+# 在 ShardingSphere-JDBC 驱动 URL 中声明使用 Apollo 方式存储配置，并指定 Apollo 中存储 YAML 的 Namespace 为 `test_namespace`
+jdbc:shardingsphere:apollo:test_namespace
 ```
 
 ## 内核插件

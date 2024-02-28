@@ -345,7 +345,6 @@ Shardingsphere-JDBC supports user-defined URL loader plugin, allowing users to l
 * Apollo URL Loader
 
 Type: Apollo
-Configurable Property: none
 
 Maven dependency:
 
@@ -355,6 +354,12 @@ Maven dependency:
     <artifactId>shardingsphere-plugin-infra-url-apollo</artifactId>
     <version>${RELEASE.VERSION}</version>
 </dependency>
+```
+
+Using Apollo to store JDBC YAML configuration, as shown below:
+```yaml
+# Declare the use of Apollo as the storage method for configuration in the ShardingSphere-JDBC driver URL, and specify the Apollo Namespace storing the YAML as `test_namespace`.
+jdbc:shardingsphere:apollo:test_namespace
 ```
 
 ## Kernel Plugin
