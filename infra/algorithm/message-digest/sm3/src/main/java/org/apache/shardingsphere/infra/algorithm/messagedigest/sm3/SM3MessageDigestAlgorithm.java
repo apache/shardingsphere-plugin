@@ -15,15 +15,11 @@
  * limitations under the License.
  */
 
-package org.apache.shardingsphere.encrypt.sm.algorithm;
+package org.apache.shardingsphere.infra.algorithm.messagedigest.sm3;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import org.apache.commons.codec.binary.Hex;
-import org.apache.shardingsphere.encrypt.exception.algorithm.EncryptAlgorithmInitializationException;
-import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
-import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithmMetaData;
-import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContext;
+import org.apache.shardingsphere.infra.algorithm.core.exception.AlgorithmInitializationException;
+import org.apache.shardingsphere.infra.algorithm.messagedigest.core.MessageDigestAlgorithm;
 import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
 import org.bouncycastle.crypto.digests.SM3Digest;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -33,14 +29,9 @@ import java.security.Security;
 import java.util.Properties;
 
 /**
- * SM3 encrypt algorithm.
+ * SM3 message digest algorithm.
  */
-@EqualsAndHashCode
-public final class SM3EncryptAlgorithm implements EncryptAlgorithm {
-    
-    static {
-        Security.addProvider(new BouncyCastleProvider());
-    }
+public final class SM3MessageDigestAlgorithm implements MessageDigestAlgorithm {
     
     private static final String SM3_SALT = "sm3-salt";
     
@@ -48,30 +39,25 @@ public final class SM3EncryptAlgorithm implements EncryptAlgorithm {
     
     private byte[] sm3Salt;
     
-    @Getter
-    private EncryptAlgorithmMetaData metaData;
+    static {
+        Security.addProvider(new BouncyCastleProvider());
+    }
     
     @Override
     public void init(final Properties props) {
-        sm3Salt = createSm3Salt(props);
-        metaData = new EncryptAlgorithmMetaData(false, false, false);
+        sm3Salt = getSalt(props);
     }
     
-    private byte[] createSm3Salt(final Properties props) {
-        String salt = null == props.getProperty(SM3_SALT) ? "" : String.valueOf(props.getProperty(SM3_SALT));
+    private byte[] getSalt(final Properties props) {
+        String salt = props.getProperty(SM3_SALT, "");
         ShardingSpherePreconditions.checkState(salt.isEmpty() || SALT_LENGTH == salt.length(),
-                () -> new EncryptAlgorithmInitializationException("SM3", "Salt should be either blank or better " + SALT_LENGTH + " bytes long."));
+                () -> new AlgorithmInitializationException(this, "Salt should be either blank or better " + SALT_LENGTH + " bytes long."));
         return salt.isEmpty() ? new byte[0] : salt.getBytes(StandardCharsets.UTF_8);
     }
     
     @Override
-    public String encrypt(final Object plainValue, final AlgorithmSQLContext algorithmSQLContext) {
+    public String digest(final Object plainValue) {
         return null == plainValue ? null : Hex.encodeHexString(digest(String.valueOf(plainValue).getBytes(StandardCharsets.UTF_8), sm3Salt));
-    }
-    
-    @Override
-    public Object decrypt(final Object cipherValue, final AlgorithmSQLContext algorithmSQLContext) {
-        return cipherValue;
     }
     
     private byte[] digest(final byte[] input, final byte[] salt) {

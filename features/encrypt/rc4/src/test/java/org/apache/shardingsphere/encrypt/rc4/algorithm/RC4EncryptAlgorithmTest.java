@@ -17,9 +17,9 @@
 
 package org.apache.shardingsphere.encrypt.rc4.algorithm;
 
-import org.apache.shardingsphere.encrypt.exception.algorithm.EncryptAlgorithmInitializationException;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
 import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContext;
+import org.apache.shardingsphere.infra.algorithm.core.exception.AlgorithmInitializationException;
 import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,14 +59,14 @@ class RC4EncryptAlgorithmTest {
     void assertKeyIsTooLong() {
         Properties props = new Properties();
         props.put("rc4-key-value", IntStream.range(0, 100).mapToObj(each -> "test").collect(Collectors.joining()));
-        assertThrows(EncryptAlgorithmInitializationException.class, () -> encryptAlgorithm.init(props));
+        assertThrows(AlgorithmInitializationException.class, () -> encryptAlgorithm.init(props));
     }
     
     @Test
     void assertKeyIsTooShort() {
         Properties props = new Properties();
         props.put("rc4-key-value", "test");
-        assertThrows(EncryptAlgorithmInitializationException.class, () -> encryptAlgorithm.init(props));
+        assertThrows(AlgorithmInitializationException.class, () -> encryptAlgorithm.init(props));
     }
     
     @Test

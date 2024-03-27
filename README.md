@@ -13,6 +13,7 @@
     * [Infra Plugin](#infra-plugin)
         * [Infra Algorithm Plugin](#infra-algorithm-plugin)
             * [Distributed Key Generator](#distributed-key-generator)
+            * [Message Digest Plugin](#message-digest-plugin)
         * [Connection Pool Plugin](#connection-pool-plugin)
         * [URL Loader Plugin](#url-loader-plugin)
     * [Kernel Plugin](#kernel-plugin)
@@ -282,6 +283,28 @@ Maven dependency:
 <dependency>
     <groupId>org.apache.shardingsphere</groupId>
     <artifactId>shardingsphere-plugin-infra-algorithm-key-generator-cosid</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
+#### Message Digest Plugin
+
+* SM3
+
+Type: SM3
+
+Attributes：
+
+| *Name*    | *DataType* | *Description*                                                                                                                                                                      | *Default Value* |
+|-----------|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
+| sm3-salt      | String    | SALT used by SM3 (null or 8 Bytes)| empty string  |
+
+Maven dependency:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-infra-algorithm-message-digest-sm3</artifactId>
     <version>${RELEASE.VERSION}</version>
 </dependency>
 ```

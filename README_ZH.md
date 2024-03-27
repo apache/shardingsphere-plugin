@@ -13,6 +13,7 @@
     * [基础设施插件](#基础设施插件)
         * [基础算法插件](#基础算法插件)
             * [分布式主键生成插件](#分布式主键生成插件)
+            * [消息摘要插件](#消息摘要插件)
         * [连接池插件](#连接池插件)
         * [URL 配置加载插件](#url-配置加载插件)
     * [内核插件](#内核插件)
@@ -282,6 +283,28 @@ Maven 依赖:
 <dependency>
     <groupId>org.apache.shardingsphere</groupId>
     <artifactId>shardingsphere-plugin-infra-algorithm-key-generator-cosid</artifactId>
+    <version>${RELEASE.VERSION}</version>
+</dependency>
+```
+
+#### 消息摘要插件
+
+* SM3
+
+类型: SM3
+
+可配置属性：
+
+| 名称        | 数据类型 | 说明         | *默认值* |
+| ------------- | --------- | ------------- |-------|
+| sm3-salt      | String    | SM3 使用的 SALT（空 或 8 Bytes）| 空字符串  |
+
+Maven 依赖:
+
+```xml
+<dependency>
+    <groupId>org.apache.shardingsphere</groupId>
+    <artifactId>shardingsphere-plugin-infra-algorithm-message-digest-sm3</artifactId>
     <version>${RELEASE.VERSION}</version>
 </dependency>
 ```

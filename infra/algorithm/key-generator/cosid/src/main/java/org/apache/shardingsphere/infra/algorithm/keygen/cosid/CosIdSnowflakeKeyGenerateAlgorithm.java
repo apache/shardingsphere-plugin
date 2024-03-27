@@ -23,8 +23,8 @@ import me.ahoo.cosid.snowflake.MillisecondSnowflakeId;
 import me.ahoo.cosid.snowflake.SnowflakeId;
 import me.ahoo.cosid.snowflake.StringSnowflakeId;
 import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContext;
+import org.apache.shardingsphere.infra.algorithm.core.exception.AlgorithmInitializationException;
 import org.apache.shardingsphere.infra.algorithm.keygen.core.KeyGenerateAlgorithm;
-import org.apache.shardingsphere.infra.algorithm.keygen.core.exception.KeyGenerateAlgorithmInitializationException;
 import org.apache.shardingsphere.infra.algorithm.keygen.cosid.constant.CosIdKeyGenerateConstants;
 import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
 import org.apache.shardingsphere.infra.instance.InstanceContext;
@@ -74,7 +74,7 @@ public final class CosIdSnowflakeKeyGenerateAlgorithm implements KeyGenerateAlgo
     
     private long getEpoch(final Properties props) {
         long result = Long.parseLong(props.getProperty(EPOCH_KEY, String.valueOf(DEFAULT_EPOCH)));
-        ShardingSpherePreconditions.checkState(result > 0L, () -> new KeyGenerateAlgorithmInitializationException(getType(), "Epoch must be positive."));
+        ShardingSpherePreconditions.checkState(result > 0L, () -> new AlgorithmInitializationException(this, "Epoch must be positive."));
         return result;
     }
     
@@ -99,7 +99,7 @@ public final class CosIdSnowflakeKeyGenerateAlgorithm implements KeyGenerateAlgo
     }
     
     private SnowflakeId getSnowflakeId() {
-        ShardingSpherePreconditions.checkNotNull(snowflakeId, () -> new KeyGenerateAlgorithmInitializationException(getType(), "Instance context not set yet."));
+        ShardingSpherePreconditions.checkNotNull(snowflakeId, () -> new AlgorithmInitializationException(this, "Instance context not set yet."));
         return snowflakeId;
     }
     
