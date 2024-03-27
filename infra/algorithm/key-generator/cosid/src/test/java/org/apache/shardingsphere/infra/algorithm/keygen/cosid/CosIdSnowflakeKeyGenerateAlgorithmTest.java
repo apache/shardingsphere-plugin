@@ -23,8 +23,8 @@ import me.ahoo.cosid.snowflake.MillisecondSnowflakeIdStateParser;
 import me.ahoo.cosid.snowflake.SnowflakeIdState;
 import me.ahoo.cosid.snowflake.SnowflakeIdStateParser;
 import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContext;
+import org.apache.shardingsphere.infra.algorithm.core.exception.AlgorithmInitializationException;
 import org.apache.shardingsphere.infra.algorithm.keygen.core.KeyGenerateAlgorithm;
-import org.apache.shardingsphere.infra.algorithm.keygen.core.exception.KeyGenerateAlgorithmInitializationException;
 import org.apache.shardingsphere.infra.algorithm.keygen.cosid.fixture.WorkerIdGeneratorFixture;
 import org.apache.shardingsphere.infra.config.mode.ModeConfiguration;
 import org.apache.shardingsphere.infra.instance.ComputeNodeInstance;
@@ -137,7 +137,7 @@ class CosIdSnowflakeKeyGenerateAlgorithmTest {
     
     @Test
     void assertGenerateKeyWhenNoneInstanceContext() {
-        assertThrows(KeyGenerateAlgorithmInitializationException.class,
+        assertThrows(AlgorithmInitializationException.class,
                 () -> TypedSPILoader.getService(KeyGenerateAlgorithm.class, "COSID_SNOWFLAKE").generateKeys(mock(AlgorithmSQLContext.class), 1));
     }
     
@@ -157,7 +157,7 @@ class CosIdSnowflakeKeyGenerateAlgorithmTest {
     
     @Test
     void assertEpochWhenOutOfRange() {
-        assertThrows(KeyGenerateAlgorithmInitializationException.class,
+        assertThrows(AlgorithmInitializationException.class,
                 () -> TypedSPILoader.getService(KeyGenerateAlgorithm.class, "COSID_SNOWFLAKE", PropertiesBuilder.build(new Property("epoch", "0"))).generateKeys(mock(AlgorithmSQLContext.class), 1));
     }
 }

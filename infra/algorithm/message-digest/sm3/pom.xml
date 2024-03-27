@@ -20,15 +20,32 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.apache.shardingsphere</groupId>
-        <artifactId>shardingsphere-plugin-infra</artifactId>
+        <artifactId>shardingsphere-plugin-infra-algorithm-message-digest</artifactId>
         <version>5.4.2-SNAPSHOT</version>
     </parent>
-    <artifactId>shardingsphere-plugin-infra-algorithm</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>shardingsphere-plugin-infra-algorithm-message-digest-sm3</artifactId>
     <name>${project.artifactId}</name>
     
-    <modules>
-        <module>key-generator</module>
-        <module>message-digest</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>shardingsphere-infra-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>shardingsphere-infra-algorithm-message-digest-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>${bouncycastle.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
+    </dependencies>
 </project>

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.apache.shardingsphere.encrypt.sm.algorithm;
+package org.apache.shardingsphere.encrypt.sm.algorithm.assisted;
 
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
 import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContext;
@@ -30,7 +30,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 
-class SM3EncryptAlgorithmTest {
+class SM3AssistedEncryptAlgorithmTest {
     
     private EncryptAlgorithm encryptAlgorithm;
     

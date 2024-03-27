@@ -15,5 +15,4 @@
 # limitations under the License.
 #
 
-org.apache.shardingsphere.encrypt.sm.algorithm.assisted.SM3AssistedEncryptAlgorithm
-org.apache.shardingsphere.encrypt.sm.algorithm.standard.SM4EncryptAlgorithm
+org.apache.shardingsphere.infra.algorithm.messagedigest.sm3.SM3MessageDigestAlgorithm
