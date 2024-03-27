@@ -22,7 +22,6 @@
         <groupId>org.apache</groupId>
         <artifactId>apache</artifactId>
         <version>29</version>
-        <relativePath   />
     </parent>
     <groupId>org.apache.shardingsphere</groupId>
     <artifactId>shardingsphere-plugin</artifactId>
