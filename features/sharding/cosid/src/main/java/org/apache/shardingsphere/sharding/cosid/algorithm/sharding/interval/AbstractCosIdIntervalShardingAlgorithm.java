@@ -27,7 +27,7 @@ import org.apache.shardingsphere.sharding.api.sharding.standard.PreciseShardingV
 import org.apache.shardingsphere.sharding.api.sharding.standard.RangeShardingValue;
 import org.apache.shardingsphere.sharding.api.sharding.standard.StandardShardingAlgorithm;
 import org.apache.shardingsphere.sharding.cosid.algorithm.CosIdAlgorithmConstants;
-import org.apache.shardingsphere.sharding.exception.ShardingPluginException;
+import org.apache.shardingsphere.infra.algorithm.core.exception.AlgorithmInitializationException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -77,7 +77,7 @@ public abstract class AbstractCosIdIntervalShardingAlgorithm<T extends Comparabl
     }
     
     private String getRequiredValue(final Properties props, final String key) {
-        ShardingSpherePreconditions.checkState(props.containsKey(key), () -> new ShardingPluginException("%s can not be null.", key));
+        ShardingSpherePreconditions.checkState(props.containsKey(key), () -> new AlgorithmInitializationException(this, "%s can not be null.", key));
         return props.getProperty(key);
     }
     

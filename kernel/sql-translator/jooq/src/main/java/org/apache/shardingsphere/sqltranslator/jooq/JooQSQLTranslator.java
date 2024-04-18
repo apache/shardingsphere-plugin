@@ -22,7 +22,7 @@ import org.apache.shardingsphere.infra.metadata.database.ShardingSphereDatabase;
 import org.apache.shardingsphere.infra.metadata.database.rule.RuleMetaData;
 import org.apache.shardingsphere.infra.session.query.QueryContext;
 import org.apache.shardingsphere.sqltranslator.context.SQLTranslatorContext;
-import org.apache.shardingsphere.sqltranslator.exception.syntax.UnsupportedTranslatedSQLException;
+import org.apache.shardingsphere.sqltranslator.exception.UnsupportedTranslatedDatabaseException;
 import org.apache.shardingsphere.sqltranslator.spi.SQLTranslator;
 import org.jooq.Query;
 import org.jooq.impl.DSL;
@@ -43,7 +43,7 @@ public final class JooQSQLTranslator implements SQLTranslator {
             // CHECKSTYLE:OFF
         } catch (final Exception ignored) {
             // CHECKSTYLE:ON
-            throw new UnsupportedTranslatedSQLException(sql);
+            throw new UnsupportedTranslatedDatabaseException(storageType);
         }
     }
     
