@@ -24,6 +24,7 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithmMetaData;
+import org.apache.shardingsphere.infra.algorithm.core.config.AlgorithmConfiguration;
 import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContext;
 import org.apache.shardingsphere.infra.algorithm.core.exception.AlgorithmInitializationException;
 import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
@@ -75,14 +76,17 @@ public final class SM4EncryptAlgorithm implements EncryptAlgorithm {
     @Getter
     private EncryptAlgorithmMetaData metaData;
     
+    private Properties props;
+    
     @Override
     public void init(final Properties props) {
+        this.props = props;
         String sm4Mode = createSm4Mode(props);
         String sm4Padding = createSm4Padding(props);
         sm4ModePadding = "SM4/" + sm4Mode + "/" + sm4Padding;
         sm4Key = createSm4Key(props);
         sm4Iv = createSm4Iv(props, sm4Mode);
-        metaData = new EncryptAlgorithmMetaData(false, false, false, new Properties());
+        metaData = new EncryptAlgorithmMetaData(false, false, false);
     }
     
     private String createSm4Mode(final Properties props) {
@@ -130,6 +134,11 @@ public final class SM4EncryptAlgorithm implements EncryptAlgorithm {
     @Override
     public Object decrypt(final Object cipherValue, final AlgorithmSQLContext encryptContext) {
         return null == cipherValue ? null : new String(decrypt(fromHexString(String.valueOf(cipherValue))), StandardCharsets.UTF_8);
+    }
+    
+    @Override
+    public AlgorithmConfiguration toConfiguration() {
+        return new AlgorithmConfiguration(getType(), props);
     }
     
     private byte[] decrypt(final byte[] cipherValue) {

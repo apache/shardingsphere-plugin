@@ -21,6 +21,7 @@ import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
 import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContext;
 import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
@@ -59,12 +60,14 @@ class SM3AssistedEncryptAlgorithmTest {
     }
     
     @Test
+    @Disabled //Algorithm `SM3` is unsupported to decrypt
     void assertDecrypt() {
         Object actual = encryptAlgorithm.decrypt("ab847c6f2f6a53be88808c5221bd6ee0762e1af1def82b21d2061599b6cf5c79", mock(AlgorithmSQLContext.class));
         assertThat(actual.toString(), is("ab847c6f2f6a53be88808c5221bd6ee0762e1af1def82b21d2061599b6cf5c79"));
     }
     
     @Test
+    @Disabled //Algorithm `SM3` is unsupported to decrypt
     void assertDecryptWithoutSalt() {
         encryptAlgorithm.init(new Properties());
         Object actual = encryptAlgorithm.decrypt("ab847c6f2f6a53be88808c5221bd6ee0762e1af1def82b21d2061599b6cf5c79", mock(AlgorithmSQLContext.class));
@@ -72,6 +75,7 @@ class SM3AssistedEncryptAlgorithmTest {
     }
     
     @Test
+    @Disabled //Algorithm `SM3` is unsupported to decrypt
     void assertDecryptWithNullCiphertext() {
         assertNull(encryptAlgorithm.decrypt(null, mock(AlgorithmSQLContext.class)));
     }

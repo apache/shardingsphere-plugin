@@ -21,20 +21,20 @@
     <parent>
         <groupId>org.apache.shardingsphere</groupId>
         <artifactId>shardingsphere-plugin-kernel-sql-translator</artifactId>
-        <version>5.4.2-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
     <artifactId>shardingsphere-plugin-kernel-sql-translator-jooq</artifactId>
     <name>${project.artifactId}</name>
     
     <properties>
-        <jooq.version>3.14.15</jooq.version>
+        <jooq.version>3.19.16</jooq.version>
     </properties>
     
     <dependencies>
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
             <artifactId>shardingsphere-sql-translator-api</artifactId>
-            <version>${project.version}</version>
+            <version>${shardingsphere.version}</version>
         </dependency>
         
         <dependency>
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
             <artifactId>shardingsphere-sql-translator-core</artifactId>
-            <version>${project.version}</version>
+            <version>${shardingsphere.version}</version>
         </dependency>
     </dependencies>
 </project>

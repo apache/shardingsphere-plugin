@@ -21,13 +21,13 @@
     <parent>
         <groupId>org.apache.shardingsphere</groupId>
         <artifactId>shardingsphere-plugin-mode-cluster-repository</artifactId>
-        <version>5.4.2-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
     <artifactId>shardingsphere-plugin-mode-cluster-repository-nacos</artifactId>
     <name>${project.artifactId}</name>
     
     <properties>
-        <nacos.version>1.4.2</nacos.version>
+        <nacos.version>2.4.3</nacos.version>
     </properties>
     
     <dependencies>

@@ -27,8 +27,8 @@ import org.apache.shardingsphere.infra.algorithm.core.exception.AlgorithmInitial
 import org.apache.shardingsphere.infra.algorithm.keygen.core.KeyGenerateAlgorithm;
 import org.apache.shardingsphere.infra.algorithm.keygen.cosid.constant.CosIdKeyGenerateConstants;
 import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
-import org.apache.shardingsphere.infra.instance.InstanceContext;
-import org.apache.shardingsphere.infra.instance.InstanceContextAware;
+import org.apache.shardingsphere.infra.instance.ComputeNodeInstanceContext;
+import org.apache.shardingsphere.infra.instance.ComputeNodeInstanceContextAware;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -41,7 +41,7 @@ import java.util.stream.IntStream;
 /**
  * CosId snowflake key generate algorithm.
  */
-public final class CosIdSnowflakeKeyGenerateAlgorithm implements KeyGenerateAlgorithm, InstanceContextAware {
+public final class CosIdSnowflakeKeyGenerateAlgorithm implements KeyGenerateAlgorithm, ComputeNodeInstanceContextAware {
     
     public static final long DEFAULT_EPOCH;
     
@@ -79,7 +79,7 @@ public final class CosIdSnowflakeKeyGenerateAlgorithm implements KeyGenerateAlgo
     }
     
     @Override
-    public void setInstanceContext(final InstanceContext instanceContext) {
+    public void setComputeNodeInstanceContext(final ComputeNodeInstanceContext instanceContext) {
         int workerId = instanceContext.generateWorkerId(props);
         MillisecondSnowflakeId millisecondSnowflakeId =
                 new MillisecondSnowflakeId(epoch, MillisecondSnowflakeId.DEFAULT_TIMESTAMP_BIT, MillisecondSnowflakeId.DEFAULT_MACHINE_BIT, MillisecondSnowflakeId.DEFAULT_SEQUENCE_BIT, workerId);

@@ -23,6 +23,7 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithmMetaData;
+import org.apache.shardingsphere.infra.algorithm.core.config.AlgorithmConfiguration;
 import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContext;
 import org.apache.shardingsphere.infra.algorithm.core.exception.AlgorithmInitializationException;
 
@@ -68,13 +69,16 @@ public final class CharDigestLikeEncryptAlgorithm implements EncryptAlgorithm {
     @Getter
     private EncryptAlgorithmMetaData metaData;
     
+    private Properties props;
+    
     @Override
     public void init(final Properties props) {
+        this.props = props;
         delta = createDelta(props);
         mask = createMask(props);
         start = createStart(props);
         charIndexes = createCharIndexes(props);
-        metaData = new EncryptAlgorithmMetaData(false, false, true, new Properties());
+        metaData = new EncryptAlgorithmMetaData(false, false, true);
     }
     
     private int createDelta(final Properties props) {
@@ -139,6 +143,11 @@ public final class CharDigestLikeEncryptAlgorithm implements EncryptAlgorithm {
     @Override
     public Object decrypt(final Object cipherValue, final AlgorithmSQLContext encryptContext) {
         throw new UnsupportedOperationException(String.format("Algorithm `%s` is unsupported to decrypt", getType()));
+    }
+    
+    @Override
+    public AlgorithmConfiguration toConfiguration() {
+        return new AlgorithmConfiguration(getType(), props);
     }
     
     private String digest(final String plainValue) {

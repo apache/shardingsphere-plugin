@@ -21,6 +21,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithmMetaData;
+import org.apache.shardingsphere.infra.algorithm.core.config.AlgorithmConfiguration;
 import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContext;
 import org.apache.shardingsphere.infra.algorithm.messagedigest.core.MessageDigestAlgorithm;
 import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
@@ -36,9 +37,11 @@ import java.util.Properties;
 public final class SM3AssistedEncryptAlgorithm implements EncryptAlgorithm {
     
     @Getter
-    private final EncryptAlgorithmMetaData metaData = new EncryptAlgorithmMetaData(false, false, false, new Properties());
+    private final EncryptAlgorithmMetaData metaData = new EncryptAlgorithmMetaData(false, false, false);
     
     private MessageDigestAlgorithm digestAlgorithm;
+    
+    private Properties props;
     
     static {
         Security.addProvider(new BouncyCastleProvider());
@@ -46,6 +49,7 @@ public final class SM3AssistedEncryptAlgorithm implements EncryptAlgorithm {
     
     @Override
     public void init(final Properties props) {
+        this.props = props;
         digestAlgorithm = TypedSPILoader.getService(MessageDigestAlgorithm.class, getType(), props);
     }
     
@@ -58,7 +62,12 @@ public final class SM3AssistedEncryptAlgorithm implements EncryptAlgorithm {
     public Object decrypt(final Object cipherValue, final AlgorithmSQLContext algorithmSQLContext) {
         throw new UnsupportedOperationException(String.format("Algorithm `%s` is unsupported to decrypt", getType()));
     }
-    
+
+    @Override
+    public AlgorithmConfiguration toConfiguration() {
+        return new AlgorithmConfiguration(getType(), props);
+    }
+
     @Override
     public String getType() {
         return "SM3";

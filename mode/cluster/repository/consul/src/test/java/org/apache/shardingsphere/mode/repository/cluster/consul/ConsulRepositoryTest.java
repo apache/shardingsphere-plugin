@@ -60,47 +60,47 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 class ConsulRepositoryTest {
-    
+
     private final ConsulRepository repository = new ConsulRepository();
-    
+
     @Mock
     private ShardingSphereConsulClient client;
-    
+
     @Mock
     private Response<GetValue> response;
-    
+
     @Mock
     private Response<List<String>> responseList;
-    
+
     @Mock
     private Response<List<GetValue>> responseGetValueList;
-    
+
     @Mock
     private Response<Boolean> responseBoolean;
-    
+
     @Mock
     private Response<String> sessionResponse;
-    
+
     @Mock
     private GetValue getValue;
-    
+
     @Mock
     private List<GetValue> getValueList;
-    
+
     @Mock
     private ConsulRawClient consulRawClient;
-    
+
     @Mock
     private HttpResponse httpResponse;
-    
+
     private long index = 123456L;
-    
+
     @BeforeEach
     void setUp() {
         setClient();
         setProperties();
     }
-    
+
     @SneakyThrows(ReflectiveOperationException.class)
     private void setClient() {
         when(client.getKVValue(any(String.class))).thenReturn(response);
@@ -115,21 +115,21 @@ class ConsulRepositoryTest {
         Plugins.getMemberAccessor().set(repository.getClass().getDeclaredField("consulClient"), repository, client);
         Plugins.getMemberAccessor().set(repository.getClass().getDeclaredField("distributedLockHolder"), repository, mock(DistributedLockHolder.class));
     }
-    
+
     @SneakyThrows(ReflectiveOperationException.class)
     private void setProperties() {
         MemberAccessor accessor = Plugins.getMemberAccessor();
         accessor.set(repository.getClass().getDeclaredField("consulProps"), repository, new ConsulProperties(new Properties()));
         accessor.set(repository.getClass().getDeclaredField("watchKeyMap"), repository, new HashMap<>(4, 1F));
     }
-    
+
     @Test
     void assertDirectlyKey() {
-        repository.getDirectly("key");
+        repository.query("key");
         verify(client).getKVValue("key");
         verify(response).getValue();
     }
-    
+
     @Test
     void assertGetChildrenKeys() {
         final String key = "/key";
@@ -147,7 +147,7 @@ class ConsulRepositoryTest {
         assertThat(iterator.next(), is("/key/key1/key1-1"));
         assertThat(iterator.next(), is("/key/key2"));
     }
-    
+
     @Test
     void assertPersistEphemeral() {
         when(client.getRawClient()).thenReturn(consulRawClient);
@@ -157,7 +157,7 @@ class ConsulRepositoryTest {
         verify(client).sessionCreate(any(NewSession.class), any(QueryParams.class));
         verify(client).setKVValue(any(String.class), any(String.class), any(PutParams.class));
     }
-    
+
     @Test
     void assertWatchUpdate() {
         final String key = "sharding/key";
@@ -180,7 +180,7 @@ class ConsulRepositoryTest {
             }
         }
     }
-    
+
     @Test
     void assertWatchDelete() {
         final String key = "sharding/key";
@@ -206,25 +206,25 @@ class ConsulRepositoryTest {
             }
         }
     }
-    
+
     @Test
     void assertDelete() {
         repository.delete("key");
         verify(client).deleteKVValue(any(String.class));
     }
-    
+
     @Test
     void assertPersist() {
         repository.persist("key1", "value1");
         verify(client).setKVValue(any(String.class), any(String.class));
     }
-    
+
     @Test
     void assertNullResponse() {
         when(response.getValue()).thenReturn(null);
         final String key = "/key";
         assertDoesNotThrow(() -> {
-            repository.getDirectly(key);
+            repository.query(key);
             repository.getChildrenKeys(key);
         });
         when(responseGetValueList.getValue()).thenReturn(null);
