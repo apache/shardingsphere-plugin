@@ -26,10 +26,6 @@
     <artifactId>shardingsphere-plugin-features-sharding-cosid</artifactId>
     <name>${project.artifactId}</name>
     
-    <properties>
-        <cosid.version>2.10.2</cosid.version>
-    </properties>
-    
     <dependencies>
         <dependency>
             <groupId>org.apache.shardingsphere</groupId>
