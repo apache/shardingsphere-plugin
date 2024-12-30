@@ -21,14 +21,10 @@
     <parent>
         <groupId>org.apache.shardingsphere</groupId>
         <artifactId>shardingsphere-plugin-infra-algorithm-key-generator</artifactId>
-        <version>5.4.2-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
     <artifactId>shardingsphere-plugin-infra-algorithm-key-generator-cosid</artifactId>
     <name>${project.artifactId}</name>
-    
-    <properties>
-        <cosid.version>1.18.5</cosid.version>
-    </properties>
     
     <dependencies>
         <dependency>
