@@ -19,8 +19,6 @@ package org.apache.shardingsphere.infra.algorithm.messagedigest.sm3;
 
 import org.apache.shardingsphere.infra.algorithm.messagedigest.core.MessageDigestAlgorithm;
 import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
-import org.apache.shardingsphere.test.util.PropertiesBuilder;
-import org.apache.shardingsphere.test.util.PropertiesBuilder.Property;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +34,9 @@ class SM3MessageDigestAlgorithmTest {
     
     @BeforeEach
     void setUp() {
-        digestAlgorithm = TypedSPILoader.getService(MessageDigestAlgorithm.class, "SM3", PropertiesBuilder.build(new Property("sm3-salt", "test1234")));
+        Properties props = new Properties();
+        props.setProperty("sm3-salt", "test1234");
+        digestAlgorithm = TypedSPILoader.getService(MessageDigestAlgorithm.class, "SM3", props);
     }
     
     @Test

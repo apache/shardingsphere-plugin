@@ -30,8 +30,6 @@ import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContex
 import org.apache.shardingsphere.infra.algorithm.keygen.core.KeyGenerateAlgorithm;
 import org.apache.shardingsphere.infra.algorithm.keygen.cosid.constant.CosIdKeyGenerateConstants;
 import org.apache.shardingsphere.infra.spi.type.typed.TypedSPILoader;
-import org.apache.shardingsphere.test.util.PropertiesBuilder;
-import org.apache.shardingsphere.test.util.PropertiesBuilder.Property;
 import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
@@ -51,7 +49,9 @@ class CosIdKeyGenerateAlgorithmTest {
         String idName = "test-cosid";
         DefaultSegmentId defaultSegmentId = new DefaultSegmentId(new IdSegmentDistributor.Mock());
         DefaultIdGeneratorProvider.INSTANCE.set(idName, defaultSegmentId);
-        KeyGenerateAlgorithm algorithm = TypedSPILoader.getService(KeyGenerateAlgorithm.class, "COSID", PropertiesBuilder.build(new Property(CosIdKeyGenerateConstants.ID_NAME_KEY, idName)));
+        Properties props = new Properties();
+        props.setProperty(CosIdKeyGenerateConstants.ID_NAME_KEY, idName);
+        KeyGenerateAlgorithm algorithm = TypedSPILoader.getService(KeyGenerateAlgorithm.class, "COSID", props);
         assertThat(algorithm.generateKeys(mock(AlgorithmSQLContext.class), 1).iterator().next(), is(1L));
         assertThat(algorithm.generateKeys(mock(AlgorithmSQLContext.class), 1).iterator().next(), is(2L));
     }
@@ -77,7 +77,9 @@ class CosIdKeyGenerateAlgorithmTest {
         String prefix = "test_";
         IdGenerator idGeneratorDecorator = new StringIdGeneratorDecorator(new MillisecondSnowflakeId(1, 0), new PrefixIdConverter(prefix, Radix62IdConverter.INSTANCE));
         DefaultIdGeneratorProvider.INSTANCE.set(idName, idGeneratorDecorator);
-        Properties props = PropertiesBuilder.build(new Property(CosIdKeyGenerateConstants.ID_NAME_KEY, idName), new Property("as-string", Boolean.TRUE.toString()));
+        Properties props = new Properties();
+        props.setProperty(CosIdKeyGenerateConstants.ID_NAME_KEY, idName);
+        props.setProperty("as-string", Boolean.TRUE.toString());
         KeyGenerateAlgorithm algorithm = TypedSPILoader.getService(KeyGenerateAlgorithm.class, "COSID", props);
         Comparable<?> actual = algorithm.generateKeys(mock(AlgorithmSQLContext.class), 1).iterator().next();
         assertThat(actual, instanceOf(String.class));

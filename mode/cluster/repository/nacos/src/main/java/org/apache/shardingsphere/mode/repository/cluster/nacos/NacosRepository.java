@@ -25,12 +25,14 @@ import com.alibaba.nacos.api.naming.pojo.Instance;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import lombok.SneakyThrows;
+import org.apache.shardingsphere.infra.instance.ComputeNodeInstanceContext;
 import org.apache.shardingsphere.infra.instance.util.IpUtils;
 import org.apache.shardingsphere.mode.repository.cluster.ClusterPersistRepository;
 import org.apache.shardingsphere.mode.repository.cluster.ClusterPersistRepositoryConfiguration;
-import org.apache.shardingsphere.mode.repository.cluster.exception.ClusterPersistRepositoryException;
+import org.apache.shardingsphere.mode.repository.cluster.exception.ClusterRepositoryPersistException;
 import org.apache.shardingsphere.mode.repository.cluster.listener.DataChangedEventListener;
 import org.apache.shardingsphere.mode.repository.cluster.lock.holder.DistributedLockHolder;
+import org.apache.shardingsphere.mode.repository.cluster.lock.impl.props.DefaultLockTypedProperties;
 import org.apache.shardingsphere.mode.repository.cluster.nacos.entity.KeyValue;
 import org.apache.shardingsphere.mode.repository.cluster.nacos.entity.ServiceController;
 import org.apache.shardingsphere.mode.repository.cluster.nacos.entity.ServiceMetaData;
@@ -69,7 +71,7 @@ public final class NacosRepository implements ClusterPersistRepository {
     private ServiceController serviceController;
     
     @Override
-    public void init(final ClusterPersistRepositoryConfiguration config) {
+    public void init(final ClusterPersistRepositoryConfiguration config, final ComputeNodeInstanceContext computeNodeInstanceContext) {
         nacosProps = new NacosProperties(config.getProps());
         client = createClient(config);
         initServiceMetaData();
@@ -84,7 +86,7 @@ public final class NacosRepository implements ClusterPersistRepository {
         try {
             return NamingFactory.createNamingService(props);
         } catch (final NacosException ex) {
-            throw new ClusterPersistRepositoryException(ex);
+            throw new ClusterRepositoryPersistException(ex);
         }
     }
     
@@ -100,7 +102,7 @@ public final class NacosRepository implements ClusterPersistRepository {
                 each.setPort(new AtomicInteger(port));
             }
         } catch (final NacosException ex) {
-            throw new ClusterPersistRepositoryException(ex);
+            throw new ClusterRepositoryPersistException(ex);
         }
     }
     
@@ -113,23 +115,24 @@ public final class NacosRepository implements ClusterPersistRepository {
             }
             put(key, value, true);
         } catch (final NacosException ex) {
-            throw new ClusterPersistRepositoryException(ex);
+            throw new ClusterRepositoryPersistException(ex);
         }
     }
     
     @Override
-    public void persistExclusiveEphemeral(final String key, final String value) {
+    public boolean persistExclusiveEphemeral(final String key, final String value) {
         try {
             Preconditions.checkState(findExistedInstance(key, true).isEmpty(), "Key `%s` already exists", key);
             put(key, value, true);
         } catch (final NacosException ex) {
-            throw new ClusterPersistRepositoryException(ex);
+            throw new ClusterRepositoryPersistException(ex);
         }
+        return true;
     }
     
     @Override
     public DistributedLockHolder getDistributedLockHolder() {
-        return null;
+        return new DistributedLockHolder("default", this, new DefaultLockTypedProperties(new Properties()));
     }
     
     @Override
@@ -147,12 +150,16 @@ public final class NacosRepository implements ClusterPersistRepository {
                 client.subscribe(each.getServiceName(), eventListener);
             }
         } catch (final NacosException ex) {
-            throw new ClusterPersistRepositoryException(ex);
+            throw new ClusterRepositoryPersistException(ex);
         }
     }
     
     @Override
-    public String getDirectly(final String key) {
+    public void removeDataListener(final String key) {
+    }
+    
+    @Override
+    public String query(final String key) {
         try {
             for (ServiceMetaData each : serviceController.getAllServices()) {
                 Optional<Instance> instance = findExistedInstance(key, each.isEphemeral()).stream().max(Comparator.comparing(NacosMetaDataUtils::getTimestamp));
@@ -162,7 +169,7 @@ public final class NacosRepository implements ClusterPersistRepository {
             }
             return null;
         } catch (final NacosException ex) {
-            throw new ClusterPersistRepositoryException(ex);
+            throw new ClusterRepositoryPersistException(ex);
         }
     }
     
@@ -184,7 +191,7 @@ public final class NacosRepository implements ClusterPersistRepository {
             }
             return concatKeys.distinct().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
         } catch (final NacosException ex) {
-            throw new ClusterPersistRepositoryException(ex);
+            throw new ClusterRepositoryPersistException(ex);
         }
     }
     
@@ -204,7 +211,7 @@ public final class NacosRepository implements ClusterPersistRepository {
                 put(key, value, false);
             }
         } catch (final NacosException ex) {
-            throw new ClusterPersistRepositoryException(ex);
+            throw new ClusterRepositoryPersistException(ex);
         }
     }
     
@@ -301,7 +308,7 @@ public final class NacosRepository implements ClusterPersistRepository {
                 waitValue(keyValues);
             }
         } catch (final NacosException ex) {
-            throw new ClusterPersistRepositoryException(ex);
+            throw new ClusterRepositoryPersistException(ex);
         }
     }
     
@@ -352,7 +359,7 @@ public final class NacosRepository implements ClusterPersistRepository {
         try {
             client.shutDown();
         } catch (final NacosException ex) {
-            throw new ClusterPersistRepositoryException(ex);
+            throw new ClusterRepositoryPersistException(ex);
         }
     }
     

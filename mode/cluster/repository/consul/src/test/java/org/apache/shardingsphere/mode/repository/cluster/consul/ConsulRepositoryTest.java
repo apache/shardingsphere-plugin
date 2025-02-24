@@ -37,7 +37,6 @@ import org.mockito.exceptions.base.MockitoException;
 import org.mockito.internal.configuration.plugins.Plugins;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.plugins.MemberAccessor;
 import org.mockito.quality.Strictness;
 
 import java.util.Arrays;
@@ -112,20 +111,19 @@ class ConsulRepositoryTest {
         when(responseGetValueList.getConsulIndex()).thenReturn(index++);
         when(responseGetValueList.getValue()).thenReturn(getValueList);
         when(client.setKVValue(any(String.class), any(String.class))).thenReturn(responseBoolean);
-        Plugins.getMemberAccessor().set(repository.getClass().getDeclaredField("consulClient"), repository, client);
-        Plugins.getMemberAccessor().set(repository.getClass().getDeclaredField("distributedLockHolder"), repository, mock(DistributedLockHolder.class));
+        Plugins.getMemberAccessor().set(ConsulRepository.class.getDeclaredField("consulClient"), repository, client);
+        Plugins.getMemberAccessor().set(ConsulRepository.class.getDeclaredField("distributedLockHolder"), repository, mock(DistributedLockHolder.class));
     }
     
     @SneakyThrows(ReflectiveOperationException.class)
     private void setProperties() {
-        MemberAccessor accessor = Plugins.getMemberAccessor();
-        accessor.set(repository.getClass().getDeclaredField("consulProps"), repository, new ConsulProperties(new Properties()));
-        accessor.set(repository.getClass().getDeclaredField("watchKeyMap"), repository, new HashMap<>(4, 1F));
+        Plugins.getMemberAccessor().set(ConsulRepository.class.getDeclaredField("consulProps"), repository, new ConsulProperties(new Properties()));
+        Plugins.getMemberAccessor().set(ConsulRepository.class.getDeclaredField("watchKeyMap"), repository, new HashMap<>(4, 1F));
     }
     
     @Test
     void assertDirectlyKey() {
-        repository.getDirectly("key");
+        repository.query("key");
         verify(client).getKVValue("key");
         verify(response).getValue();
     }
@@ -224,7 +222,7 @@ class ConsulRepositoryTest {
         when(response.getValue()).thenReturn(null);
         final String key = "/key";
         assertDoesNotThrow(() -> {
-            repository.getDirectly(key);
+            repository.query(key);
             repository.getChildrenKeys(key);
         });
         when(responseGetValueList.getValue()).thenReturn(null);
