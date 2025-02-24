@@ -22,6 +22,7 @@ import lombok.Getter;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithm;
 import org.apache.shardingsphere.encrypt.spi.EncryptAlgorithmMetaData;
+import org.apache.shardingsphere.infra.algorithm.core.config.AlgorithmConfiguration;
 import org.apache.shardingsphere.infra.algorithm.core.context.AlgorithmSQLContext;
 import org.apache.shardingsphere.infra.algorithm.core.exception.AlgorithmInitializationException;
 import org.apache.shardingsphere.infra.exception.core.ShardingSpherePreconditions;
@@ -46,10 +47,13 @@ public final class RC4EncryptAlgorithm implements EncryptAlgorithm {
     @Getter
     private EncryptAlgorithmMetaData metaData;
     
+    private Properties props;
+    
     @Override
     public void init(final Properties props) {
+        this.props = props;
         key = getKey(props);
-        metaData = new EncryptAlgorithmMetaData(false, false, false, new Properties());
+        metaData = new EncryptAlgorithmMetaData(false, false, false);
     }
     
     private byte[] getKey(final Properties props) {
@@ -107,6 +111,11 @@ public final class RC4EncryptAlgorithm implements EncryptAlgorithm {
         int temp = sBox[i];
         sBox[i] = sBox[j];
         sBox[j] = temp;
+    }
+    
+    @Override
+    public AlgorithmConfiguration toConfiguration() {
+        return new AlgorithmConfiguration(getType(), props);
     }
     
     @Override

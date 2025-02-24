@@ -29,6 +29,7 @@ import com.ecwid.consul.v1.session.model.Session;
 import com.google.common.base.Strings;
 import lombok.Getter;
 import org.apache.http.HttpStatus;
+import org.apache.shardingsphere.infra.instance.ComputeNodeInstanceContext;
 import org.apache.shardingsphere.mode.event.DataChangedEvent;
 import org.apache.shardingsphere.mode.repository.cluster.ClusterPersistRepository;
 import org.apache.shardingsphere.mode.repository.cluster.ClusterPersistRepositoryConfiguration;
@@ -66,7 +67,7 @@ public final class ConsulRepository implements ClusterPersistRepository {
     private Map<String, Collection<String>> watchKeyMap;
     
     @Override
-    public void init(final ClusterPersistRepositoryConfiguration config) {
+    public void init(final ClusterPersistRepositoryConfiguration config, final ComputeNodeInstanceContext computeNodeInstanceContext) {
         consulProps = new ConsulProperties(config.getProps());
         ConsulRawClient rawClient = createConsulRawClient(config.getServerLists());
         consulClient = new ShardingSphereConsulClient(rawClient);
@@ -75,7 +76,7 @@ public final class ConsulRepository implements ClusterPersistRepository {
     }
     
     @Override
-    public String getDirectly(final String key) {
+    public String query(final String key) {
         Response<GetValue> response = consulClient.getKVValue(key);
         if (null == response) {
             return null;
@@ -144,8 +145,8 @@ public final class ConsulRepository implements ClusterPersistRepository {
         URL serverUrl;
         try {
             serverUrl = new URL(!serverLists.startsWith("https://") && !serverLists.startsWith("http://") ? "http://" + serverLists : serverLists);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+        } catch (final MalformedURLException ex) {
+            throw new RuntimeException(ex);
         }
         if (-1 == serverUrl.getPort()) {
             return new ConsulRawClient(serverUrl.getHost());
@@ -162,8 +163,9 @@ public final class ConsulRepository implements ClusterPersistRepository {
     }
     
     @Override
-    public void persistExclusiveEphemeral(final String key, final String value) {
+    public boolean persistExclusiveEphemeral(final String key, final String value) {
         persistEphemeral(key, value);
+        return true;
     }
     
     @Override
@@ -171,6 +173,10 @@ public final class ConsulRepository implements ClusterPersistRepository {
         Thread watchThread = new Thread(() -> watchChildKeyChangeEvent(key, listener));
         watchThread.setDaemon(true);
         watchThread.start();
+    }
+    
+    @Override
+    public void removeDataListener(final String key) {
     }
     
     private void watchChildKeyChangeEvent(final String key, final DataChangedEventListener listener) {

@@ -17,8 +17,6 @@
 
 package org.apache.shardingsphere.mode.repository.cluster.consul.props;
 
-import org.apache.shardingsphere.test.util.PropertiesBuilder;
-import org.apache.shardingsphere.test.util.PropertiesBuilder.Property;
 import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
@@ -30,8 +28,9 @@ class ConsulPropertiesTest {
     
     @Test
     void assertGetValue() {
-        assertThat(new ConsulProperties(PropertiesBuilder.build(new Property(ConsulPropertyKey.TIME_TO_LIVE_SECONDS.getKey(), "50"))).getValue(ConsulPropertyKey.BLOCK_QUERY_TIME_TO_SECONDS),
-                is(60L));
+        Properties props = new Properties();
+        props.setProperty(ConsulPropertyKey.TIME_TO_LIVE_SECONDS.getKey(), "50");
+        assertThat(new ConsulProperties(props).getValue(ConsulPropertyKey.BLOCK_QUERY_TIME_TO_SECONDS), is(60L));
     }
     
     @Test
